@@ -8,7 +8,7 @@ from GraphBuilder import GraphBuilder
 
 
 def main():
-    input_stream = FileStream("./Tesi/file.gv")
+    input_stream = FileStream("./file.gv")
     
     lexer = DOTLexer(input_stream)
     stream = CommonTokenStream(lexer)
