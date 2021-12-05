@@ -1,0 +1,20 @@
+digraph G {
+    A -> B [label = "a b c" 
+    comment = " bella a tutti"]
+    //-> }}}
+    /*
+    }}
+    }
+    }
+    
+    
+    */
+    B -> C [label = "a" comment="+
+        >>C-a->A; /*PROVA*/
+        <<B-a->D
+    +"]
+    C -> A [label = "a", "comment" = "sono un 
+    commento"]
+    B -> D [label = "a"]
+    D -> E ["label" = esss]
+}

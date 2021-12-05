@@ -1,0 +1,109 @@
+SP + BTI => PL
+SP + BTI + WF => CC 
+SP + BTI + WF + CPI => pre-reversible
+pre-reversible => P,R,Q,S different states
+BTI + CPI => ID
+SP + CPI + IRE + IEC => RPI
+pre-reversible and satisfies NRE => polychotomy holds
+
+
+SP - Square Property*
+t: P-α->Q and u: P-β->R and t ι u  =>  exist u': Q-β->S and t': R-α->S
+
+BTI - Backward Transitions are Independent*
+t: P~α~>Q and t': P~β~>Q' and t=/=t'  =>  t ι t'
+
+WF - Well-Foundedness*
+No infinite reverse computation
+we do not have Pi:= Pi+1-αi->Pi for all i = 0,1,...
+
+PL - Parabolic Lemma
+for any path r there are forward-only paths s, s' 
+r ≈ nss' and |s| + |s'| ≤ |r|
+satisfies BTI and SP => satisfies PL
+
+CC - Causal Consistency
+r coinitial and cofinal with s => r ≈ s
+satisfies WF and PL => satisfies CC
+
+UT - Unique Transition
+P-α->Q and P-β->Q => a=b
+satisfies CC => satisfies UT
+
+CPI - Coinitial Propagation of Independence*
+t: P-α->Q and u: P-β->R and u': Q-β->S and t': R-α->S with t ι u  => u' ι nt
+
+ID - Indipendence of Diamonds
+t: P-α->Q and u: P-β->R and u': Q-β->S and t': R-α->S with 
+Q=/=R if α and β both forwards/backwards
+P=/=S otherwise
+=> t ι u
+satisfies BTI and CPI => ID
+
+CS - Casual Safety via Independe of Transitions
+P-α->Q, r: Q-β->*R, #(r,[P,α,Q])=0, S-α->R, (P, a, Q) ∼ (S, a, R)  
+=> (P, a, Q) ι t for all t in r t.c. #(r, [t]) > 0
+
+CL - Casual Liveness via Independe of Transitions
+P-α->Q, r: Q-β->*R, #(r,[P,α,Q])=0, (P, a, Q) ι t for all t in r t.c. #(r, [t]) > 0
+=> S-α->R, (P, a, Q) ∼ (S, a, R)
+
+IRE - Indipendence Respects Event
+t ∼ t' ι u => t ι u
+IRE => CS and CL
+
+IEC - Indipendence of Event is Coinitial
+t1 ι t2  
+=>  exist t'1 ∼ t1, t'2 ∼ t2 t.c. t'1 and t'2 are coinitial and t'1 ι t'2
+
+RPI - Reversing Preserves Indipendence
+t ι t' => nt ι t'
+satisfies SP, CPI, IRE, IEC => RPI
+
+SP, BTI, WF, CPI, IRE, IEC are independent of each other
+
+CS< - Casual Safety via Ordering of Events
+P-α->Q, r: Q-β->*R, #(r,[P,α,Q])=0, S-α->R, (P, a, Q) ∼ (S, a, R)  
+=> (P, a, Q) </ e' for all e' t.c. #(r, e')>0
+
+CL< - Casual Liveness via Ordering of Events
+P-α->Q, r: Q-β->*R, #(r,[P,α,Q])=0, (P, a, Q) </ e' for all e' t.c. #(r, e')>0
+=> S-α->R, (P, a, Q) ∼ (S, a, R)
+
+CSci - Casual Safety via ci
+P-α->Q, r: Q-β->*R, #(r,[P,α,Q])=0, S-α->R, (P, a, Q) ∼ (S, a, R)  
+=> [P, a, Q] ci e for all e t.c. #(r, e)>0
+if pre-reversible => satisfies CSci
+
+CLci - Casual Liveness via ci
+P-α->Q, r: Q-β->*R, #(r,[P,α,Q])=0, [P, a, Q] ci e for all e t.c. #(r, e)>0
+=> S-α->R, (P, a, Q) ∼ (S, a, R)
+if pre-reversible and satisfies CIRE => satisfies CLci
+
+CIRE - Coinitial IRE 
+If [t] ci [u] and t, u are coinitial => t ι u
+
+Polychotomy
+L is a pre-reversible LTSI if whenever e, e' forward events only one holds:
+e = e'   e<e'   e'<e   e#e'   e ci e' 
+
+NRE - No Repeated Events
+In any rooted path r, for any forward event e we have #(r, e) ≤ 1
+
+RED - Reverse Event Determinism
+t, t' backward transitions and t~t' => t=t'
+L pre-reversible => (NRE <=> RED <=> ci irreflexive on events <=> polychotomy holds)
+
+pre-reversible CIRE => satisfies NRE
+
+IEC => (CLcl =>CL)
+IEC and NRE => (CL< => CL)
+
+t g(ι) u <=> t~t'ιu'~u for some t', u'
+t c(ι) u <=> t ι u and t coinitial u
+
+L coinitial and CIRE => L'=(Proc,Lab, ->, h(ι)) pre-reversible LTSI and satisfies IRE and IEC
+L coinitial and CIRE => L'=(Proc,Lab, ->, c(ι)) pre-reversible coinitial LTSI and satisfies LTSI and CIRE
+
+L coinitial combined??? LTSI I binary relation on Lab
+for any coinitial transitions t: P-α->Q and u: P-->R we have t ι u <=> I(a,b) where a = und(α) and b = und(β)
