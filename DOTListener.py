@@ -26,6 +26,15 @@ class DOTListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by DOTParser#indipendence_list.
+    def enterIndipendence_list(self, ctx:DOTParser.Indipendence_listContext):
+        pass
+
+    # Exit a parse tree produced by DOTParser#indipendence_list.
+    def exitIndipendence_list(self, ctx:DOTParser.Indipendence_listContext):
+        pass
+
+
     # Enter a parse tree produced by DOTParser#stmt.
     def enterStmt(self, ctx:DOTParser.StmtContext):
         pass
@@ -77,6 +86,33 @@ class DOTListener(ParseTreeListener):
 
     # Exit a parse tree produced by DOTParser#a_label.
     def exitA_label(self, ctx:DOTParser.A_labelContext):
+        pass
+
+
+    # Enter a parse tree produced by DOTParser#start.
+    def enterStart(self, ctx:DOTParser.StartContext):
+        pass
+
+    # Exit a parse tree produced by DOTParser#start.
+    def exitStart(self, ctx:DOTParser.StartContext):
+        pass
+
+
+    # Enter a parse tree produced by DOTParser#start_node.
+    def enterStart_node(self, ctx:DOTParser.Start_nodeContext):
+        pass
+
+    # Exit a parse tree produced by DOTParser#start_node.
+    def exitStart_node(self, ctx:DOTParser.Start_nodeContext):
+        pass
+
+
+    # Enter a parse tree produced by DOTParser#start_edge.
+    def enterStart_edge(self, ctx:DOTParser.Start_edgeContext):
+        pass
+
+    # Exit a parse tree produced by DOTParser#start_edge.
+    def exitStart_edge(self, ctx:DOTParser.Start_edgeContext):
         pass
 
 
@@ -143,30 +179,21 @@ class DOTListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by DOTParser#comment.
-    def enterComment(self, ctx:DOTParser.CommentContext):
+    # Enter a parse tree produced by DOTParser#indipendence.
+    def enterIndipendence(self, ctx:DOTParser.IndipendenceContext):
         pass
 
-    # Exit a parse tree produced by DOTParser#comment.
-    def exitComment(self, ctx:DOTParser.CommentContext):
-        pass
-
-
-    # Enter a parse tree produced by DOTParser#comment_content.
-    def enterComment_content(self, ctx:DOTParser.Comment_contentContext):
-        pass
-
-    # Exit a parse tree produced by DOTParser#comment_content.
-    def exitComment_content(self, ctx:DOTParser.Comment_contentContext):
+    # Exit a parse tree produced by DOTParser#indipendence.
+    def exitIndipendence(self, ctx:DOTParser.IndipendenceContext):
         pass
 
 
-    # Enter a parse tree produced by DOTParser#indipendence_comment.
-    def enterIndipendence_comment(self, ctx:DOTParser.Indipendence_commentContext):
+    # Enter a parse tree produced by DOTParser#indipendence_edge.
+    def enterIndipendence_edge(self, ctx:DOTParser.Indipendence_edgeContext):
         pass
 
-    # Exit a parse tree produced by DOTParser#indipendence_comment.
-    def exitIndipendence_comment(self, ctx:DOTParser.Indipendence_commentContext):
+    # Exit a parse tree produced by DOTParser#indipendence_edge.
+    def exitIndipendence_edge(self, ctx:DOTParser.Indipendence_edgeContext):
         pass
 
 
@@ -176,51 +203,6 @@ class DOTListener(ParseTreeListener):
 
     # Exit a parse tree produced by DOTParser#identifier.
     def exitIdentifier(self, ctx:DOTParser.IdentifierContext):
-        pass
-
-
-    # Enter a parse tree produced by DOTParser#identifier_no_quote.
-    def enterIdentifier_no_quote(self, ctx:DOTParser.Identifier_no_quoteContext):
-        pass
-
-    # Exit a parse tree produced by DOTParser#identifier_no_quote.
-    def exitIdentifier_no_quote(self, ctx:DOTParser.Identifier_no_quoteContext):
-        pass
-
-
-    # Enter a parse tree produced by DOTParser#string.
-    def enterString(self, ctx:DOTParser.StringContext):
-        pass
-
-    # Exit a parse tree produced by DOTParser#string.
-    def exitString(self, ctx:DOTParser.StringContext):
-        pass
-
-
-    # Enter a parse tree produced by DOTParser#number.
-    def enterNumber(self, ctx:DOTParser.NumberContext):
-        pass
-
-    # Exit a parse tree produced by DOTParser#number.
-    def exitNumber(self, ctx:DOTParser.NumberContext):
-        pass
-
-
-    # Enter a parse tree produced by DOTParser#letter_digit.
-    def enterLetter_digit(self, ctx:DOTParser.Letter_digitContext):
-        pass
-
-    # Exit a parse tree produced by DOTParser#letter_digit.
-    def exitLetter_digit(self, ctx:DOTParser.Letter_digitContext):
-        pass
-
-
-    # Enter a parse tree produced by DOTParser#letter.
-    def enterLetter(self, ctx:DOTParser.LetterContext):
-        pass
-
-    # Exit a parse tree produced by DOTParser#letter.
-    def exitLetter(self, ctx:DOTParser.LetterContext):
         pass
 
 

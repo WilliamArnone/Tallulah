@@ -20,6 +20,10 @@ def main():
     builder = GraphBuilder()
     walker = ParseTreeWalker()
     walker.walk(builder, tree)
+    graph = builder.graph
+    print(graph.CheckSP())
+    print(graph.CheckBTI())
+    print(graph.CheckWF())
 
 if __name__ == main():
     main()

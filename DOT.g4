@@ -4,9 +4,12 @@
 */
 grammar DOT;
 
-graph   :  'strict'? 'digraph' identifier '{' stmt_list '}' ;
+graph   :  'strict'? 'digraph' identifier '{' start ';'? stmt_list '}' ('/*' indipendence_list? '*/')?;
+
 
 stmt_list:  (stmt ';'? stmt_list)? ;
+
+indipendence_list: indipendence (';' | ',')? indipendence_list?;
 
 /* A statement could be:
     - x1 [... some attributes ...]       // a node
@@ -23,9 +26,15 @@ attr_list  : '[' a_list? ']' attr_list?;
 
 attr_label  : '[' a_label ']' attr_list?;
 
-a_list : (comment | assignment)  (';'|',')? a_list?;
+a_list : assignment (';'|',')? a_list?;
 
 a_label : ('label' | '"label"') '=' identifier (';'|',')? a_list?;
+
+start: ('start' | '"start"') (port? | edgeRHS attr_label);
+
+start_node: Start_identifier port?;
+
+start_edge: Start_identifier edgeRHS attr_label;
 
 edge_stmt : (node_id | subgraph_stmt) edgeRHS attr_label;
 
@@ -41,33 +50,22 @@ subgraph_stmt : ('subgraph' identifier?)? '{'stmt_list'}';
 
 assignment : identifier '=' identifier;
 
-comment : ('comment' | '"comment"') '=' comment_content;
+indipendence: indipendence_edge'/'indipendence_edge;
 
-comment_content : ('"+'indipendence_comment (';' indipendence_comment)*'+"' | identifier);
-
-indipendence_comment : Direction Direction identifier_no_quote '-'identifier_no_quote'->' identifier_no_quote;
-
-identifier : identifier_no_quote | QuoteString ;
-
-identifier_no_quote : string | number;
-
-string : letter letter_digit* ;
-
-number : '-'? (('.'Digit+) | Digit+('.'Digit*)?);
-
-letter_digit : letter | Digit;
-letter : (Uppercase_letter | Lowercase_letter | '-' | '_' | ',') ;
+indipendence_edge: Direction identifier '-' identifier '->' identifier ;
 
 
-/* TODO: should be possible to create string with + */
-QuoteString: '"' (~[+"\\] | '\\' .)* '"';
+identifier : String | Quote | Number;
+
+Quote: '"' (~["\\] | '\\' .)* '"';
+String: [a-zA-Z] [a-zA-Z0-9]*;
+Number : '-'? (('.'[0-9]+) | [0-9]+('.'[0-9]*)?);
 Direction : '<' | '>';
+Start_identifier : 'start' | '"start"';
 Uppercase_letter : [A-Z];
 Lowercase_letter : [a-z];
 Digit : [0-9];
 
 WS: [ \t\n\r]+ -> skip;
-
-COMMENT: '/*' .*? '*/' -> skip;
 
 LINE_COMMENT: '//' ~[\r\n]* -> skip;

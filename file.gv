@@ -1,20 +1,20 @@
 digraph G {
-    A -> B [label = "a b c" 
-    comment = " bella a tutti"]
-    //-> }}}
-    /*
-    }}
-    }
-    }
-    
-    
-    */
-    B -> C [label = "a" comment="+
-        >>C-a->A; /*PROVA*/
-        <<B-a->D
-    +"]
-    C -> A [label = "a", "comment" = "sono un 
-    commento"]
-    B -> D [label = "a"]
-    D -> E ["label" = esss]
+    start
+    A -> B -> {C -> {D->E [label = c]} -> F [label=b]} -> G [label=a]
+    B -> A [label = k]
+
+    //{1 2 3} -> {{{4 5} -> {6 7}[label = a]} -> {8 9 10}[label = a]} -> {11->12[label = a]} [label = a]
+
+    // start
+    // A->B1->D -> M [label = "a" comment="+
+    //     >> A-b->B2
+    // +"]
+    // {A Z X} -> {B2 U2 KKK}  [label = "b"]
+    // B1->C [label = "b"]
+    // B2->C [label = "a" comment="+
+    //     <<C-b->B1
+    // +"]
 }
+/*
+> A-a->B / < C - a -> B
+*/ 
