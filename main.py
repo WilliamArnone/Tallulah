@@ -1,29 +1,17 @@
-from antlr4.tree.Tree import ParseTreeWalker
-from DOTLexer import DOTLexer
-from DOTParser import DOTParser
-from antlr4.FileStream import FileStream
-from antlr4.CommonTokenStream import CommonTokenStream
-
-from GraphBuilder import GraphBuilder
+from view import View
+from controller import Controller
+from tkinter import Tk
+#from PIL import ImageTk, Image
 
 
 def main():
-    input_stream = FileStream("./file.gv")
-    
-    lexer = DOTLexer(input_stream)
-    stream = CommonTokenStream(lexer)
-    
-    parser = DOTParser(stream)
-    
-    tree = parser.graph()
-    
-    builder = GraphBuilder()
-    walker = ParseTreeWalker()
-    walker.walk(builder, tree)
-    graph = builder.graph
-    print(graph.CheckSP())
-    print(graph.CheckBTI())
-    print(graph.CheckWF())
+    root = Tk()
+    #icon = ImageTk.PhotoImage(Image.open("icons/logo-ico.ico"))
+    #root.tk.call("wm","iconphoto",root._w,icon)
+    c = Controller()
+    View(root, c)
+    root.mainloop()
 
-if __name__ == main():
+
+if __name__ == '__main__':
     main()
