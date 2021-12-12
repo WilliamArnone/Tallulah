@@ -1,4 +1,4 @@
-# Generated from DOT.g4 by ANTLR 4.9.3
+# Generated from .\DOT.g4 by ANTLR 4.9.3
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .DOTParser import DOTParser
@@ -194,6 +194,15 @@ class DOTListener(ParseTreeListener):
 
     # Exit a parse tree produced by DOTParser#indipendence_edge.
     def exitIndipendence_edge(self, ctx:DOTParser.Indipendence_edgeContext):
+        pass
+
+
+    # Enter a parse tree produced by DOTParser#start_identifier.
+    def enterStart_identifier(self, ctx:DOTParser.Start_identifierContext):
+        pass
+
+    # Exit a parse tree produced by DOTParser#start_identifier.
+    def exitStart_identifier(self, ctx:DOTParser.Start_identifierContext):
         pass
 
 

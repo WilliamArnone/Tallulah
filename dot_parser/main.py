@@ -1,10 +1,10 @@
 from antlr4.tree.Tree import ParseTreeWalker
-from DOTLexer import DOTLexer
-from DOTParser import DOTParser
+from .DOTLexer import DOTLexer
+from .DOTParser import DOTParser
 from antlr4.FileStream import FileStream
 from antlr4.CommonTokenStream import CommonTokenStream
 
-from GraphBuilder import GraphBuilder
+from .GraphBuilder import GraphBuilder
 
 
 def main(path_file):
@@ -20,7 +20,5 @@ def main(path_file):
     builder = GraphBuilder()
     walker = ParseTreeWalker()
     walker.walk(builder, tree)
-    return builder.graph
 
-if __name__ == main():
-    main()
+    return builder.graph

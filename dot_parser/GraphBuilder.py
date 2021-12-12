@@ -1,15 +1,17 @@
-from DOTParser import DOTParser
-from DOTListener import DOTListener
-from Graph import Graph
+from .DOTParser import DOTParser
+from .DOTListener import DOTListener
+from .Graph import Graph
 
 
 class GraphBuilder(DOTListener):
 
-    graph = Graph()
-    nodes_order = []
-    nodes_depth = []
-    edges = []
-    labels = []
+    def __init__(self):
+        super().__init__()
+        self.graph = Graph().__class__()
+        self.nodes_order = []
+        self.nodes_depth = []
+        self.edges = []
+        self.labels = []
 
     def enterEdge(self):        
         self.nodes_order.append(set())
@@ -29,6 +31,8 @@ class GraphBuilder(DOTListener):
 
     def enterStart_edge(self, ctx:DOTParser.Start_edgeContext):
         self.enterEdge()
+        self.nodes_order[-1].add('start')
+        self.nodes_depth[-1].add('start')
 
     def exitStart_edge(self, ctx:DOTParser.Start_edgeContext):
         self.exitEdge()
@@ -57,7 +61,7 @@ class GraphBuilder(DOTListener):
 
     def enterNode_id(self, ctx:DOTParser.Node_idContext):
         if(self.nodes_depth and self.nodes_order):
-            node = ctx.getText().replace('"',"")
+            node = ctx.getText().replace('"','')
             self.nodes_order[-1].add(node)
             self.nodes_depth[-1].add(node)
 
@@ -73,7 +77,7 @@ class GraphBuilder(DOTListener):
                 self.edges[-1].add((start, end))
 
     def enterA_label(self, ctx:DOTParser.A_labelContext):
-        self.labels.append(ctx.children[2].getText())
+        self.labels.append(ctx.children[2].getText().replace('"', ''))
 
 
     def enterIndipendence(self, ctx:DOTParser.IndipendenceContext):
@@ -85,8 +89,8 @@ class GraphBuilder(DOTListener):
 
 
     def enterIndipendence_edge(self, ctx:DOTParser.Indipendence_edgeContext):
-        start = ctx.children[1].getText().replace('"', "")
-        label = ctx.children[3].getText().replace('"', "")
-        end = ctx.children[5].getText().replace('"', "")
+        start = ctx.children[1].getText().replace('"', '')
+        label = ctx.children[3].getText().replace('"', '')
+        end = ctx.children[5].getText().replace('"', '')
         is_forward = ctx.children[0].getText()=='>'
         self.indipendence.append((start, label, end, is_forward))

@@ -30,11 +30,11 @@ a_list : assignment (';'|',')? a_list?;
 
 a_label : ('label' | '"label"') '=' identifier (';'|',')? a_list?;
 
-start: ('start' | '"start"') (port? | edgeRHS attr_label);
+start: start_node | start_edge;
 
-start_node: Start_identifier port?;
+start_node: start_identifier port?;
 
-start_edge: Start_identifier edgeRHS attr_label;
+start_edge: start_identifier edgeRHS attr_label;
 
 edge_stmt : (node_id | subgraph_stmt) edgeRHS attr_label;
 
@@ -54,14 +54,15 @@ indipendence: indipendence_edge'/'indipendence_edge;
 
 indipendence_edge: Direction identifier '-' identifier '->' identifier ;
 
+start_identifier : 'start' | '"start"';
 
-identifier : String | Quote | Number;
+
+identifier : String | Quote | Number | start_identifier;
 
 Quote: '"' (~["\\] | '\\' .)* '"';
 String: [a-zA-Z] [a-zA-Z0-9]*;
 Number : '-'? (('.'[0-9]+) | [0-9]+('.'[0-9]*)?);
 Direction : '<' | '>';
-Start_identifier : 'start' | '"start"';
 Uppercase_letter : [A-Z];
 Lowercase_letter : [a-z];
 Digit : [0-9];

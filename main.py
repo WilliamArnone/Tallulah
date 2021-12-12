@@ -5,10 +5,10 @@ from tkinter import Tk
 
 
 def main():
-    root = Tk()
     #icon = ImageTk.PhotoImage(Image.open("icons/logo-ico.ico"))
     #root.tk.call("wm","iconphoto",root._w,icon)
     c = Controller()
+    root = Tk()
     View(root, c)
     root.mainloop()
 
