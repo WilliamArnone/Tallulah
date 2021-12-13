@@ -57,7 +57,7 @@ class View:
         image = ImageTk.PhotoImage(Image.open(imagePath))
         lblImage = Label(image=image)
         lblImage.image=image
-        lblImage.grid(row=0, column=0, sticky=W)
+        lblImage.grid(row=0, column=0, sticky=W+E+S+N)
         self.widgets.append(lblImage)
 
         frame = LabelFrame(self.root, text = "Properties", padx=10, pady=10)
