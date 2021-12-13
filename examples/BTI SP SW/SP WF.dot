@@ -1,0 +1,18 @@
+digraph G {
+    start -> A [label="a"]
+    start -> B [label="b"]
+    start -> C [label="c"]
+
+    A -> AC [label="c"]
+    A -> AB [label="b"]
+
+    B -> AB [label="a"]
+    B -> BC [label="c"]
+
+    C -> AC [label="a"]
+    C -> BC [label="b"]
+
+    AC -> ABC [label="b"]
+    AB -> ABC [label="c"]
+    BC -> ABC [label="a"]
+}

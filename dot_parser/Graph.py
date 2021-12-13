@@ -49,11 +49,14 @@ class Graph:
     def GetEdgesFrom(self, node, all=True, is_forward=True):
         edges = []
         for end in self.nodes:
-            if not (node, end) in self.edges.keys(): continue
-            labels = self.edges[(node, end)]
-            for label in labels:
-                if all or is_forward: edges.append((node, label, end, True))
-                if all or not is_forward: edges.append((end, label, node, False))
+            if (node, end) in self.edges.keys():
+                forward = self.edges[(node, end)]
+                for label in forward:
+                    if all or is_forward: edges.append((node, label, end, True))
+            if (end, node) in self.edges.keys():
+                backward = self.edges[(end, node)]
+                for label in backward:
+                    if all or not is_forward: edges.append((node, label, end, False))
 
         return edges
 

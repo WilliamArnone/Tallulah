@@ -13,6 +13,13 @@ class View:
         #root.protocol("WM_DELETE_WINDOW", self.v_on_closing)
         self.controller = controller
         self.root = root
+
+        menu_bar = Menu(root)
+        file_menu = Menu(menu_bar, tearoff=False)
+        file_menu.add_command(label="Open File",compound=LEFT, command= self.open_file)
+        menu_bar.add_cascade(label="Open",menu=file_menu)
+        root.config(menu=menu_bar)
+
         self.startUI()
 
     def startUI(self):

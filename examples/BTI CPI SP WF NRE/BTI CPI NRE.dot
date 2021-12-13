@@ -1,0 +1,34 @@
+digraph G {
+    start -> P [label="c"]
+    start -> A [label="a"]
+    start -> B [label="b"]
+
+    P -> Q [label="a"]
+    A -> Q [label="c"]
+    A -> C [label="b"]
+    B -> C [label="a"]
+
+    Q -> R [label="b"]
+    C -> R [label="c"]
+}
+
+/*
+
+> start -c-> P / > start -a-> A
+> start -b-> B / > start -a-> A
+
+< P -c-> start / > P -a-> Q
+< A -a-> start / > A -c-> Q
+
+< B -b-> start / > B -a-> C
+< A -a-> start / > A -b-> C
+
+< Q -a-> P / < Q -c-> A
+< C -b-> A / < C -a-> B
+
+> A -c-> Q / > A -b-> C
+< Q -c-> A / > Q -b-> R
+< C -b-> A / > C -c-> R
+< R -b-> Q / < R -c-> C
+
+*/
