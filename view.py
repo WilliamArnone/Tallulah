@@ -1,5 +1,6 @@
 import tkinter as ttk
 from tkinter import *
+from tkinter import messagebox
 from tkinter import filedialog
 from PIL import ImageTk, Image
 
@@ -39,13 +40,18 @@ class View:
         self.widgets.append(buttonExit)
 
     def mainUI(self, path):
+        errors = self.controller.setPath(path)
+
+        if errors:
+            messagebox.showerror("Error"," ".join(map(str, errors)))
+            return
+
         self.clearScreen()
         self.root.geometry("1000x800")
         self.root.grid_columnconfigure(0, weight=3)
         self.root.grid_columnconfigure(1, weight=1)
         self.root.grid_rowconfigure(0, weight=1)
         self.root.grid_rowconfigure(1, weight=0)
-        self.controller.setPath(path)
 
         imagePath = self.controller.getGraphImage()
         image = ImageTk.PhotoImage(Image.open(imagePath))

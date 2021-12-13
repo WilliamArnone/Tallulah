@@ -8,7 +8,9 @@ class Controller:
 
     def setPath(self, path):
         self.path = path
-        self.graph = parse(self.path)
+        graph, errors = parse(self.path)
+        self.graph = graph
+        return errors
 
     def getGraphImage(self):
         s = Source.from_file(self.path)
