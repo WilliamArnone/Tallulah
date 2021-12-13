@@ -1,10 +1,10 @@
 ### Dependencies
 
 - [Python3](https://www.python.org)
-- [Graphviz](https://www.graphviz.org/download/) (0.10.1)
-- [graphviz-python3-package](https://pypi.org/project/graphviz/) (0.13.2)
-- [antlr4-python3-runtime](https://pypi.org/project/antlr4-python3-runtime/) (4.7.2)
-- [PIL](https://pypi.org/project/Pillow/) (7.1.2)
+- [Graphviz](https://www.graphviz.org/download/) (2.50.0)
+- [graphviz-python3-package](https://pypi.org/project/graphviz/) (0.19)
+- [antlr4-python3-runtime](https://pypi.org/project/antlr4-python3-runtime/) (4.9.3)
+- [PIL](https://pypi.org/project/Pillow/) (8.4.0)
 
 ### Running
 
