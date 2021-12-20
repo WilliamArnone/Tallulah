@@ -23,12 +23,12 @@ class Graph:
         self.AddNode(start, end)
         self.labels.add(label)
         if is_forward:
-            if not (start, end) in self.edges.keys(): 
+            if not (start, end) in self.edges: 
                 self.edges[(start, end)] = []
             if not label in self.edges[(start, end)]:
                 self.edges[(start, end)].append(label)
         else:
-            if not (end, start) in self.edges.keys(): 
+            if not (end, start) in self.edges: 
                 self.edges[(end, start)] = []
             if not label in self.edges[(end, start)]:
                 self.edges[(end, start)].append(label)
@@ -40,20 +40,20 @@ class Graph:
         end = lst[2]
         is_forward = len(lst)==3 or lst[3]
         if is_forward:
-            if (start, end) in self.edges.keys():
+            if (start, end) in self.edges:
                 self.edges[(start, end)].remove(label)
         else:
-            if (end, start) in self.edges.keys():
+            if (end, start) in self.edges:
                 self.edges[(end, start)].remove(label)
 
     def GetEdgesFrom(self, node, all=True, is_forward=True):
         edges = []
         for end in self.nodes:
-            if (node, end) in self.edges.keys():
+            if (node, end) in self.edges:
                 forward = self.edges[(node, end)]
                 for label in forward:
                     if all or is_forward: edges.append((node, label, end, True))
-            if (end, node) in self.edges.keys():
+            if (end, node) in self.edges:
                 backward = self.edges[(end, node)]
                 for label in backward:
                     if all or not is_forward: edges.append((node, label, end, False))
@@ -63,7 +63,7 @@ class Graph:
     def GetAdj(self, node):
         nodes = []
         for end in self.nodes:
-            if (node, end) in self.edges.keys() and self.edges[(node, end)]:
+            if (node, end) in self.edges and self.edges[(node, end)]:
                 nodes.append(end)
 
         return nodes
@@ -99,21 +99,33 @@ class Graph:
     def CheckSP(self, errors = None):
         if errors == None: errors = []
         for node in self.nodes:
-            edges = self.GetEdgesFrom(node, all=False)
+            edges = self.GetEdgesFrom(node)
             for edge1 in edges:
                 (start1, label1, end1, is_forward1) = edge1
                 for edge2 in edges:
                     (start2, label2, end2, is_forward2) = edge2
                     if self.AreIndipendent(edge1, edge2):
+                        found = False
+                        firstForward = is_forward1 if (is_forward1==is_forward2) else not is_forward1
+                        secondForward = is_forward2 if (is_forward1==is_forward2) else not is_forward2
                         for s in self.nodes:
-                            firstExist = (end1, s) in self.edges.keys() and label2 in self.edges[(end1, s)] 
-                            secondExist = (end2, s) in self.edges.keys() and label1 in self.edges[(end2, s)]
+                            first_key = (end1, s) if firstForward else (s, end1)
+                            second_key = (end2, s) if secondForward else (s, end2)
+
+                            firstExist = first_key in self.edges and label2 in self.edges[first_key] 
+                            secondExist = second_key in self.edges and label1 in self.edges[second_key]
 
                             if firstExist or secondExist:
+                                found = True
                                 if not firstExist:
-                                    errors.append((end1, label2, s, True))
+                                    errors.append((end1, label2, s, firstForward))
                                 elif not secondExist:
-                                    errors.append((end2, label1, s, True))
+                                    errors.append((end2, label1, s, secondForward))
+
+                        if not found:
+                            errors.append((end1, label2, None, firstForward))
+                            errors.append((end2, label1, None, secondForward))
+
                         
         return len(errors)==0
 
@@ -127,6 +139,39 @@ class Graph:
                         errors.append((edge1, edge2))
         return len(errors)==0
 
+    def CheckCPI(self, errors):
+        if errors == None: errors = []
+        for node in self.nodes:
+            edges = self.GetEdgesFrom(node, all=False)
+            for edge1 in edges:
+                (start1, label1, end1, is_forward1) = edge1
+                for edge2 in edges:
+                    (start2, label2, end2, is_forward2) = edge2
+                    for s in self.nodes:
+                        firstExist = (end1, s) in self.edges and label2 in self.edges[(end1, s)] 
+                        secondExist = (end2, s) in self.edges and label1 in self.edges[(end2, s)]
+
+                        if firstExist and secondExist:
+                            cond = []
+                            cond.append((edge1, edge2))
+                            cond.append(((end1, label1, start1, False), 
+                                (end1, label2, s, True)))
+                            cond.append(((end2, label2, start2, False), 
+                                (end2, label1, s, True)))
+                            cond.append(((s, label2, end1, False), 
+                                (s, label1, end2, False)))
+
+                            for condition in cond:
+                                first, second = condition
+                                if self.AreIndipendent(first, second): cond.remove(condition)
+
+                            if len(cond) < 4:
+                                for condition in cond:
+                                    errors.append(condition)
+                        
+        return len(errors)==0
+    
+
     def ToString(self):
         graph = 'digraph G {\n'
 
@@ -134,7 +179,7 @@ class Graph:
 
         for start in self.nodes:
             for end in self.nodes:
-                if not (start, end) in self.edges.keys(): continue
+                if not (start, end) in self.edges: continue
                 for label in self.edges[(start, end)]:
                     if start == self.startNode:
                         graph = graph + '\t"' + start + '" -> "' + end +'" [label="'+label+'"]\n'

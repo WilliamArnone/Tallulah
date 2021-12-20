@@ -2,27 +2,27 @@ digraph G {
 	"start" -> "A" [label="a"]
 	"start" -> "C" [label="c"]
 	"start" -> "B" [label="b"]
-	"BC" -> "ABC" [label="a"]
-	"AB" -> "ABC" [label="c"]
-	"A" -> "AB" [label="b"]
-	"A" -> "AC" [label="c"]
-	"C" -> "BC" [label="b"]
-	"C" -> "AC" [label="a"]
 	"AC" -> "ABC" [label="b"]
+	"BC" -> "ABC" [label="a"]
+	"A" -> "AC" [label="c"]
+	"A" -> "AB" [label="b"]
+	"AB" -> "ABC" [label="c"]
+	"C" -> "AC" [label="a"]
+	"C" -> "BC" [label="b"]
 	"B" -> "BC" [label="c"]
 	"B" -> "AB" [label="a"]
 } 
  /* 
-	<ABC -b-> AC / <ABC -a-> BC
-	<BC -c-> B / <BC -b-> C
-	<AC -a-> C / <AC -c-> A
-	<AB -b-> A / <AB -a-> B
-	<AB -a-> B / <AB -b-> A
-	<ABC -a-> BC / <ABC -c-> AB
-	<BC -b-> C / <BC -c-> B
-	<AC -c-> A / <AC -a-> C
-	<ABC -b-> AC / <ABC -c-> AB
-	<ABC -c-> AB / <ABC -b-> AC
-	<ABC -a-> BC / <ABC -b-> AC
 	<ABC -c-> AB / <ABC -a-> BC
+	<AB -a-> B / <AB -b-> A
+	<ABC -a-> BC / <ABC -b-> AC
+	<ABC -b-> AC / <ABC -a-> BC
+	<ABC -c-> AB / <ABC -b-> AC
+	<ABC -a-> BC / <ABC -c-> AB
+	<BC -c-> B / <BC -b-> C
+	<AC -c-> A / <AC -a-> C
+	<BC -b-> C / <BC -c-> B
+	<AB -b-> A / <AB -a-> B
+	<AC -a-> C / <AC -c-> A
+	<ABC -b-> AC / <ABC -c-> AB
 */

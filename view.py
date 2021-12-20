@@ -81,6 +81,11 @@ class View:
         wf.pack(anchor=W)
         self.widgets.append(wf)
 
+        properties['CPI']=BooleanVar()
+        cpi = Checkbutton(frame, text="CPI - Coinitial Propagation of Indipendence", variable=properties['CPI'])
+        cpi.pack(anchor=W)
+        self.widgets.append(cpi)
+
         btnCheck = Button(frame, text="Check", command=lambda:self.checkProperties(properties))
         btnCheck.pack()
         self.widgets.append(btnCheck)

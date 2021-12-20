@@ -33,8 +33,7 @@ class Controller:
             err = []
             self.graph.CheckBTI(err)
             if err:
-                for error in err:
-                    edge1, edge2 = error
+                for edge1, edge2 in err:
                     log.append(EdgeToString(edge1)+' and '+EdgeToString(edge2)+' are not indipendent')
             else:
                 log.append('BTI holds')
@@ -47,6 +46,15 @@ class Controller:
                     log.append(EdgeToString(error)+' creates a cycle')
             else:
                 log.append('WF holds')
+        if properties['CPI'].get():
+            log.append('CPI - Coinitial Propagation of Indipendence:')
+            err = []
+            self.graph.CheckCPI(err)
+            if err:
+                for edge1, edge2 in err:
+                    log.append(EdgeToString(edge1)+' and '+EdgeToString(edge2)+' are not indipendent')
+            else:
+                log.append('CPI holds')
         return log
                 
     def generateProperties(self, properties):
