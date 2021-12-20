@@ -1,6 +1,6 @@
 from .DOTParser import DOTParser
 from .DOTListener import DOTListener
-from .Graph import Graph
+from Graph import Graph
 
 
 class GraphBuilder(DOTListener):
