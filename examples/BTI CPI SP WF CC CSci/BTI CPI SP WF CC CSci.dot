@@ -35,7 +35,7 @@ digraph g {
 < D -b-> A / > D -a-> E
 
 < C -b-> A / > C -b-> F
-< D -b-> A / > D -b-> E
+< D -b-> A / > D -b-> F
 
 > B -a-> C / > B -a-> D
 

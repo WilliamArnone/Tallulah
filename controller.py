@@ -25,7 +25,11 @@ class Controller:
             self.graph.CheckSP(err)
             if err:
                 for error in err:
-                    log.append('Can\'t find '+EdgeToString(error))
+                    start, label, end, is_forward = error
+                    if end == None:
+                        log.append(start+" should have a transiction labbeled "+label+" to a state")
+                    else:
+                        log.append('Can\'t find '+EdgeToString(error))
             else:
                 log.append('SP holds')
         if properties['BTI'].get():
@@ -67,10 +71,11 @@ class Controller:
                 new_graph.CheckSP(err)
                 if err:
                     for error in err:
-                        new_graph.AddEdge(error)
+                        start, label, end, forward = error
+                        if(end != None): new_graph.AddEdge(error)
                         
             if properties['BTI'].get():
-                err = []
+                err = set()
                 new_graph.CheckBTI(err)
                 if err:
                     for error in err:
@@ -78,12 +83,19 @@ class Controller:
                         new_graph.AddIndipendence(edge1, edge2)
                         
             if properties['WF'].get():
-                err = []
+                err = set()
                 new_graph.CheckWF(err)
                 if err:
                     for error in err:
                         new_graph.RemoveEdge(error)
                         
+            if properties['CPI'].get():
+                err = set()
+                new_graph.CheckCPI(err)
+                if err:
+                    for error in err:
+                        edge1, edge2 = error
+                        new_graph.AddIndipendence(edge1, edge2)
         return new_graph.ToString()
 
 

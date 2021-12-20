@@ -46,19 +46,35 @@ class Graph:
             if (end, start) in self.edges:
                 self.edges[(end, start)].remove(label)
 
-    def GetEdgesFrom(self, node, all=True, is_forward=True):
+    def GetEdgesFrom(self, node, all=True, only_forward=True):
         edges = []
         for end in self.nodes:
             if (node, end) in self.edges:
                 forward = self.edges[(node, end)]
                 for label in forward:
-                    if all or is_forward: edges.append((node, label, end, True))
+                    if all or only_forward: edges.append((node, label, end, True))
             if (end, node) in self.edges:
                 backward = self.edges[(end, node)]
                 for label in backward:
-                    if all or not is_forward: edges.append((node, label, end, False))
+                    if all or not only_forward: edges.append((node, label, end, False))
 
         return edges
+
+    def GetEdgesBetween(self, start, end, all=True, only_forward=True):
+        edges = []
+        if all or only_forward:
+            labels = self.edges[(start,end)] if (start, end) in self.edges else []
+            for label in labels: edges.append((start, label, end, True))
+        if all or not only_forward:
+            labels = self.edges[(end,start)] if (end, start) in self.edges else []
+            for label in labels: edges.append((start, label, end, False))
+
+        return edges
+    
+    def EdgeExists(self, edge):
+        start, label, end, forward = edge
+        if not forward: start, end = end, start
+        return label in self.edges[(start, end)] if (start, end) in self.edges else False
 
     def GetAdj(self, node):
         nodes = []
@@ -79,7 +95,7 @@ class Graph:
 
     def CheckWF(self, errors = None, node = None, visited=None):
 
-        if errors == None: errors = []
+        if errors == None: errors = set()
         if visited == None: visited = []
         if node == None: node = self.startNode
 
@@ -88,8 +104,8 @@ class Graph:
         visited.append(node)
         for adj_node in self.GetAdj(node):
             if not self.CheckWF(errors, adj_node, visited): 
-                for label in self.edges[(node, adj_node)]:
-                    errors.append((node, label, adj_node, True))
+                for label in self.GetEdgesBetween(node, adj_node, all=False):
+                    errors.add((node, label, adj_node, True))
 
         visited.remove(node)
 
@@ -97,9 +113,10 @@ class Graph:
 
 
     def CheckSP(self, errors = None):
-        if errors == None: errors = []
+        if errors == None: errors = set()
         for node in self.nodes:
-            edges = self.GetEdgesFrom(node)
+            #remove all=False to check also backward transitions
+            edges = self.GetEdgesFrom(node, all=False)
             for edge1 in edges:
                 (start1, label1, end1, is_forward1) = edge1
                 for edge2 in edges:
@@ -109,50 +126,57 @@ class Graph:
                         firstForward = is_forward1 if (is_forward1==is_forward2) else not is_forward1
                         secondForward = is_forward2 if (is_forward1==is_forward2) else not is_forward2
                         for s in self.nodes:
-                            first_key = (end1, s) if firstForward else (s, end1)
-                            second_key = (end2, s) if secondForward else (s, end2)
+                            first_start, first_end = (end1, s) if firstForward else (s, end1)
+                            second_start, second_end = (end2, s) if secondForward else (s, end2)
 
-                            firstExist = first_key in self.edges and label2 in self.edges[first_key] 
-                            secondExist = second_key in self.edges and label1 in self.edges[second_key]
+                            first = (first_start, label2, first_end, firstForward)
+                            second = (second_start, label1, second_end, secondForward)
+
+                            firstExist = self.EdgeExists(first) 
+                            secondExist = self.EdgeExists(second)
 
                             if firstExist or secondExist:
                                 found = True
                                 if not firstExist:
-                                    errors.append((end1, label2, s, firstForward))
+                                    errors.add((end1, label2, s, firstForward))
                                 elif not secondExist:
-                                    errors.append((end2, label1, s, secondForward))
+                                    errors.add((end2, label1, s, secondForward))
 
                         if not found:
-                            errors.append((end1, label2, None, firstForward))
-                            errors.append((end2, label1, None, secondForward))
+                            errors.add((end1, label2, None, firstForward))
+                            errors.add((end2, label1, None, secondForward))
 
                         
         return len(errors)==0
 
     def CheckBTI(self, errors = None):
-        if errors == None: errors = []
+        if errors == None: errors = set()
         for node in self.nodes:
-            edges = self.GetEdgesFrom(node, all=False, is_forward=False)
+            edges = self.GetEdgesFrom(node, all=False, only_forward=False)
             for edge1 in edges:
                 for edge2 in edges:
                     if edge1 != edge2 and not self.AreIndipendent(edge1, edge2):
-                        errors.append((edge1, edge2))
+                        errors.add((edge1, edge2))
         return len(errors)==0
 
     def CheckCPI(self, errors):
-        if errors == None: errors = []
+        if errors == None: errors = set()
         for node in self.nodes:
             edges = self.GetEdgesFrom(node, all=False)
             for edge1 in edges:
                 (start1, label1, end1, is_forward1) = edge1
                 for edge2 in edges:
+                    #is this necessary?
+                    if edge1 == edge2: continue
+
                     (start2, label2, end2, is_forward2) = edge2
                     for s in self.nodes:
-                        firstExist = (end1, s) in self.edges and label2 in self.edges[(end1, s)] 
-                        secondExist = (end2, s) in self.edges and label1 in self.edges[(end2, s)]
+                        firstExist = self.EdgeExists((end1, label2, s, True))
+                        secondExist = self.EdgeExists((end2, label1, s, True))
 
                         if firstExist and secondExist:
                             cond = []
+                            temp = []
                             cond.append((edge1, edge2))
                             cond.append(((end1, label1, start1, False), 
                                 (end1, label2, s, True)))
@@ -163,11 +187,11 @@ class Graph:
 
                             for condition in cond:
                                 first, second = condition
-                                if self.AreIndipendent(first, second): cond.remove(condition)
+                                if not self.AreIndipendent(first, second): temp.append(condition)
 
-                            if len(cond) < 4:
-                                for condition in cond:
-                                    errors.append(condition)
+                            if len(temp) > 0 and len(temp) < 4:
+                                for condition in temp:
+                                    errors.add(condition)
                         
         return len(errors)==0
     

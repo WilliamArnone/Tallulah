@@ -26,20 +26,17 @@ digraph g {
 < B -b-> start / > B -a-> D
 
 > A -b-> C / > A -b-> D
-
-< C -b-> A / > C -a-> E
-< D -b-> A / > D -a-> E
-
-< C -b-> A / > C -b-> F
-< D -b-> A / > D -b-> E
-
 > B -a-> C / > B -a-> D
 
+< C -b-> A / > C -a-> E
+< C -b-> A / > C -b-> F
 < C -a-> B / > C -a-> E
-< D -a-> B / > D -a-> E
-
 < C -a-> B / > C -b-> F
-< D -a-> B / > D -b-> E
+
+< D -b-> A / > D -a-> E
+< D -b-> A / > D -b-> F
+< D -a-> B / > D -a-> E
+< D -a-> B / > D -b-> F
 
 > C -a-> E / > C -b-> F
 < E -a-> C / > E -b-> G
