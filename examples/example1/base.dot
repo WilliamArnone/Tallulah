@@ -1,0 +1,20 @@
+digraph G {
+
+    start -> A [label="a"]
+    start -> B [label="b"]
+    A -> C [label="b"]
+    B -> C [label="a"]
+    A -> D [label="a"]
+    B -> E [label="b"]
+    D -> F [label="b"]
+    C -> F [label="a"]
+    E -> G [label="a"]
+    C -> G [label="b"]
+    F -> end [label="b"]
+    G -> end [label="a"]
+    
+    
+    
+    start [shape=Mdiamond];
+    end [shape=Msquare];
+}

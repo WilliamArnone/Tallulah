@@ -1,0 +1,20 @@
+digraph G {
+	"start" -> "B" [label="b"]
+	"start" -> "A" [label="a"]
+	"E" -> "G" [label="a"]
+	"B" -> "E" [label="b"]
+	"B" -> "C" [label="a"]
+	"C" -> "G" [label="b"]
+	"C" -> "F" [label="a"]
+	"G" -> "end" [label="a"]
+	"A" -> "C" [label="b"]
+	"A" -> "D" [label="a"]
+	"F" -> "end" [label="b"]
+	"D" -> "F" [label="b"]
+} 
+ /* 
+	<end -a-> G / <end -b-> F
+	<G -b-> C / <G -a-> E
+	<C -a-> B / <C -b-> A
+	<F -b-> D / <F -a-> C
+*/

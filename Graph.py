@@ -84,7 +84,8 @@ class Graph:
         return nodes
 
     def AddIndipendence(self, edge1, edge2):
-        self.indipendence.add((edge1, edge2))
+        if not (edge2, edge1) in self.indipendence:
+            self.indipendence.add((edge1, edge2))
 
     def AreIndipendent(self, edge1, edge2):
         for i in self.indipendence:

@@ -118,11 +118,46 @@ class View:
         logString = ''
 
         for msg in log: logString = logString + msg + '\n'
+        self.popUpWindow(logString)
 
-        self.top = Toplevel()
-        self.top.title("Log")
-        label = Label(self.top,text=logString,justify=LEFT,padx=15,pady=15)
-        label.pack()
+    def popUpWindow(self, text):
+        root = Tk()
+
+        canvas = Canvas(root)
+        canvas.pack(side=LEFT, fill='both', expand=True)
+
+        scrollbar = Scrollbar(root, command=canvas.yview)
+        scrollbar.pack(side=RIGHT, fill='y')
+
+        canvas.configure(yscrollcommand = scrollbar.set)
+
+        # update scrollregion after starting 'mainloop'
+        # when all widgets are in canvas
+        canvas.bind('<Configure>', lambda x: canvas.configure(scrollregion=canvas.bbox('all')))
+
+        # --- put frame in canvas ---
+
+        frame = Frame(canvas)
+        canvas.create_window((0,0), window=frame, anchor='nw')
+
+        # --- add widgets in frame ---
+
+        l = Label(frame, text=text, justify=LEFT, padx=15,pady=15)
+        l.pack(fill='both', expand=True)
+
+        btn = Button(frame, text="Save", command=lambda: self.saveLog(text))
+        btn.pack()
+
+        # --- start program ---
+
+        root.mainloop()
+
+    def saveLog(self, text):
+        dialog = filedialog.asksaveasfile(mode='w', title="Save Log", defaultextension=".txt", filetypes=(("Text FIle", "*.txt"), ("all files", "*.*")))
+        if dialog is None: 
+            return
+        dialog.write(text)
+        dialog.close() 
 
     def generateProperties(self, properties):
         text2save = self.controller.generateProperties(properties)

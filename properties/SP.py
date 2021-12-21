@@ -12,6 +12,7 @@ def CheckSP(graph:Graph, errors:set = None):
                 (start2, label2, end2, is_forward2) = edge2
                 if graph.AreIndipendent(edge1, edge2):
                     found = False
+                    temp = []
                     for end in graph.nodes:
                         first = (end1, label2, end, is_forward2)
                         second = (end2, label1, end, is_forward1)
@@ -19,16 +20,21 @@ def CheckSP(graph:Graph, errors:set = None):
                         firstExist = graph.EdgeExists(first) 
                         secondExist = graph.EdgeExists(second)
 
-                        if firstExist or secondExist:
-                            found = True
-                            if not firstExist:
-                                errors.add(first)
-                            elif not secondExist:
-                                errors.add(second)
+                        found = found or firstExist or secondExist
+                        if firstExist and secondExist:
+                            temp = []
+                            break
+                        elif not firstExist:
+                            temp.append(first)
+                        elif not secondExist:
+                            temp.append(second)
 
                     if not found:
                         errors.add((end1, label2, None, is_forward2))
                         errors.add((end2, label1, None, is_forward1))
+                    else:
+                        for error in temp:
+                            errors.add(error)
 
                         
     return len(errors)==0

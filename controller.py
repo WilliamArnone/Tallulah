@@ -38,7 +38,7 @@ class Controller:
                         log.append('Can\'t find '+EdgeToString(error))
 
         if properties['BTI'].get():
-            log.append('BTI - Backward Transitions are Indipendent:')
+            log.append('\nBTI - Backward Transitions are Indipendent:')
             err = set()
             if CheckBTI(self.graph, err):
                 log.append('BTI holds')
@@ -47,7 +47,7 @@ class Controller:
                     log.append(EdgeToString(edge1)+' and '+EdgeToString(edge2)+' are not indipendent')
 
         if properties['WF'].get():
-            log.append('WF - Well-Foundedness:')
+            log.append('\nWF - Well-Foundedness:')
             err = set()
             if CheckWF(self.graph, err):
                 log.append('WF holds')
@@ -56,7 +56,7 @@ class Controller:
                     log.append(EdgeToString(error)+' creates a cycle')
 
         if properties['CPI'].get():
-            log.append('CPI - Coinitial Propagation of Indipendence:')
+            log.append('\nCPI - Coinitial Propagation of Indipendence:')
             err = set()
             if CheckCPI(self.graph, err):
                 log.append('CPI holds')
@@ -65,7 +65,7 @@ class Controller:
                     log.append(EdgeToString(edge1)+' and '+EdgeToString(edge2)+' are not indipendent')
 
         if properties['IRE'].get():
-            log.append('IRE - Independence Respects Events:')
+            log.append('\nIRE - Independence Respects Events:')
             err = set()
             if CheckIRE(self.graph, err):
                 log.append('IRE holds')
@@ -76,37 +76,45 @@ class Controller:
         return log
                 
     def generateProperties(self, properties):
-        log = None
+        continue_to_check = True
         new_graph = copy.deepcopy(self.graph)
-        while log == None or len(log)>0:
-            log = []
+        while continue_to_check:
+            continue_to_check = False
             if properties['SP'].get():
                 err = []
-                CheckSP(new_graph, err)
-                if err:
+                if not CheckSP(new_graph, err):
+                    continue_to_check = True
                     for error in err:
                         start, label, end, forward = error
                         if(end != None): new_graph.AddEdge(error)
                         
             if properties['BTI'].get():
                 err = set()
-                CheckBTI(new_graph, err)
-                if err:
+                if not CheckBTI(new_graph, err):
+                    continue_to_check = True
                     for error in err:
                         edge1, edge2 = error
                         new_graph.AddIndipendence(edge1, edge2)
                         
             if properties['WF'].get():
                 err = set()
-                CheckWF(new_graph, err)
-                if err:
+                if not CheckWF(new_graph, err):
+                    continue_to_check = True
                     for error in err:
                         new_graph.RemoveEdge(error)
                         
             if properties['CPI'].get():
                 err = set()
-                CheckCPI(new_graph, err)
-                if err:
+                if not CheckCPI(new_graph, err):
+                    continue_to_check = True
+                    for error in err:
+                        edge1, edge2 = error
+                        new_graph.AddIndipendence(edge1, edge2)
+
+            if properties['IRE'].get():
+                err = set()
+                if not CheckIRE(new_graph, err):
+                    continue_to_check = True
                     for error in err:
                         edge1, edge2 = error
                         new_graph.AddIndipendence(edge1, edge2)
