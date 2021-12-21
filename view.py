@@ -86,6 +86,11 @@ class View:
         cpi.pack(anchor=W)
         self.widgets.append(cpi)
 
+        properties['IRE']=BooleanVar()
+        ire = Checkbutton(frame, text="IRE - Independence Respects Events", variable=properties['IRE'])
+        ire.pack(anchor=W)
+        self.widgets.append(ire)
+
         btnCheck = Button(frame, text="Check", command=lambda:self.checkProperties(properties))
         btnCheck.pack()
         self.widgets.append(btnCheck)

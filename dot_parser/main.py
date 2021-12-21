@@ -34,4 +34,5 @@ def main(path_file):
     except:
         return (None, errorListener.errors)
 
+    builder.graph.InitEvents()
     return (builder.graph, [])

@@ -5,8 +5,8 @@ class Graph:
     
     def __init__(self):
         self.edges = {}
+        self.events = []
         self.nodes = set()
-        self.labels = set()
         self.indipendence = set()
         self.startNode = 'start'
         self.nodes.add(self.startNode)
@@ -21,7 +21,6 @@ class Graph:
         end = lst[2]
         is_forward = len(lst)==3 or lst[3]
         self.AddNode(start, end)
-        self.labels.add(label)
         if is_forward:
             if not (start, end) in self.edges: 
                 self.edges[(start, end)] = []
@@ -87,11 +86,92 @@ class Graph:
     def AddIndipendence(self, edge1, edge2):
         self.indipendence.add((edge1, edge2))
 
-    def AreIndipendent(self, node1, node2):
+    def AreIndipendent(self, edge1, edge2):
         for i in self.indipendence:
-            if i == (node1, node2) or i == (node2, node1):
+            if i == (edge1, edge2) or i == (edge2, edge1):
                 return True
         return False
+
+    def Reverse(self, edge):
+        start, label, end, is_forward = edge
+        return (end, label, start, not is_forward)
+
+    def InitEvents(self):
+        for start in self.nodes:
+            edges = self.GetEdgesFrom(start)
+            for edge1 in edges:
+                (start1, label1, end1, is_forward1) = edge1
+                self.NewEvent(edge1)
+                for edge2 in edges:
+                    #is this necessary?
+                    if edge1 == edge2: continue
+
+                    (start2, label2, end2, is_forward2) = edge2
+                    self.NewEvent(edge2)
+                    
+                    for end in self.nodes:
+                        first = (end1, label2, end, is_forward2)
+                        second = (end2, label1, end, is_forward1)
+
+                        if self.EdgeExists(first) and self.EdgeExists(second):
+                            cond = []
+                            cond.append((edge1, edge2))
+                            cond.append(((end1, label1, start, not is_forward1), 
+                                (end1, label2, end, is_forward2)))
+                            cond.append(((end2, label2, start, not is_forward2), 
+                                (end2, label1, end, is_forward1)))
+                            cond.append(((end, label2, end1, not is_forward2), 
+                                (end, label1, end2, not is_forward1)))
+
+                            indipendent = True
+                            for condition in cond:
+                                ind1, ind2 = condition
+                                indipendent = indipendent and self.AreIndipendent(ind1, ind2)
+                            
+                            if indipendent and ((is_forward1 == is_forward2 and end1 != end2) or (is_forward1 == is_forward2 and start != end)):
+                                    self.AddToEvent(edge1, second)
+                                    self.AddToEvent(edge2, first)
+
+                            else:
+                                self.NewEvent(first)
+                                self.NewEvent(second)
+
+    def NewEvent(self, edge):
+        for event in self.events:
+            if edge in event: return event
+        new_event = set()
+        new_event.add(edge)
+        self.events.append(new_event)
+        return new_event
+
+    def AddToEvent(self, edge1, edge2):
+        union = set()
+        event1 = None
+        event2 = None
+        
+        for event in self.events:
+            if edge1 in event: 
+                event1 = event
+                union = union.union(event)
+            if edge2 in event: 
+                event2 = event
+                union = union.union(event)
+
+        if (event1 != None): self.events.remove(event1) 
+        else: union.add(edge1)
+        if (event2 != None and event2 != event1): self.events.remove(event2)
+        else: union.add(edge2)
+        self.events.append(union)
+
+    def AreSameEvent(self, edge1, edge2):
+        for event in self.events:
+            if edge1 in event: return edge2 in event
+        return False
+
+    def GetEventClass(self, edge):
+        for event in self.events:
+            if edge in event: return event
+        return None
 
     def ToString(self):
         graph = 'digraph G {\n'
