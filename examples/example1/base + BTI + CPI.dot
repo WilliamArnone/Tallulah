@@ -13,7 +13,7 @@ digraph G {
 	"G" -> "end" [label="a"]
 } 
  /* 
-	>C -a-> F / <C -b-> A
+	> C -a-> F / < C -b-> A
 	>B -b-> E / >B -a-> C
 	>D -b-> F / <D -a-> A
 	<end -a-> G / <end -b-> F

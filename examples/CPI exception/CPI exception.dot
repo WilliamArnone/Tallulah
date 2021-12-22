@@ -1,0 +1,12 @@
+digraph G{
+    start -> {R Q} -> S [label="a"]
+}
+
+/*
+
+< S-a->R / < S-a->Q
+> start-a->R / > start-a->Q
+< R-a->start / > R-a->S
+< Q-a->start / > Q-a->S
+
+*/
