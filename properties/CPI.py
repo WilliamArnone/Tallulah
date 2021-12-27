@@ -2,6 +2,7 @@ from Graph import Graph
 
 #t: P-α->Q and u: P-β->R and u': Q-β->S and t': R-α->S with t ι u  => u' ι nt
 def CheckCPI(graph:Graph, errors:set = None):
+    """Check CPI property and return true if holds"""
     if errors == None: errors = set()
     #node is the P of the definition
     for start in graph.nodes:
