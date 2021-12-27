@@ -43,7 +43,7 @@ digraph g {
 < D -a-> B / > D -a-> E
 
 < C -a-> B / > C -b-> F
-< D -a-> B / > D -b-> E
+< D -a-> B / > D -b-> F
 
 > C -a-> E / > C -b-> F
 < E -a-> C / > E -b-> G
