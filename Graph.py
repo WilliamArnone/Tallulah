@@ -90,6 +90,7 @@ class Graph:
 
     def AreIndipendent(self, edge1, edge2):
         """Return true if the transitions are indipendent"""
+        if edge1 == edge2: return False
         for i in self.indipendence:
             if i == (edge1, edge2) or i == (edge2, edge1):
                 return True

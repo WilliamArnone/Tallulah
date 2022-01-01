@@ -67,21 +67,21 @@ class View:
             indipendenceLabel = Label(frame_main, text="INDIPENDENCE:")
             indipendenceLabel.pack(fill="x")
 
-            canvas = Canvas(frame_main)
-            canvas.pack(side=LEFT, expand=YES, fill=BOTH)
+            self.canvas = Canvas(frame_main)
+            self.canvas.pack(side=LEFT, expand=YES, fill=BOTH)
 
-            scrollbar = Scrollbar(frame_main, command=canvas.yview)
+            scrollbar = Scrollbar(frame_main, command=self.canvas.yview)
             scrollbar.pack(side=RIGHT, fill='y')
 
-            canvas.configure(yscrollcommand = scrollbar.set)
+            self.canvas.configure(yscrollcommand = scrollbar.set)
 
             
             # scrolling hanglers
-            canvas.bind('<Configure>', lambda event: canvas.configure(scrollregion=canvas.bbox('all')))
-            self.root.bind_all("<MouseWheel>", lambda event: canvas.yview_scroll(-1*(event.delta//120), "units"))
+            self.canvas.bind('<Configure>', lambda event: self.canvas.configure(scrollregion=self.canvas.bbox('all')))
+            self.root.bind_all("<MouseWheel>", lambda event: self.canvas.yview_scroll(-1*(event.delta//120), "units"))
 
-            self.indipency_frame = Frame(canvas)
-            canvas.create_window((0,0), window=self.indipency_frame, anchor='nw')
+            self.indipency_frame = Frame(self.canvas)
+            self.canvas.create_window((0,0), window=self.indipency_frame, anchor='nw')
             
             # initialize check buttons
             properties = {}
@@ -126,6 +126,10 @@ class View:
         txtIndipendence = Label(self.indipency_frame, border=0, justify=LEFT, text=self.controller.GetIndipendenceString())
         txtIndipendence.pack(fill="both")
         self.widgets.append(txtIndipendence)
+
+        #updating indipendence label scrollbar
+        self.canvas.update()
+        self.canvas.configure(scrollregion=self.canvas.bbox('all'))
 
         
 

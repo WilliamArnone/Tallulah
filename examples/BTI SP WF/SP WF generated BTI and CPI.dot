@@ -1,52 +1,40 @@
 digraph G {
-	"start" -> "A" [label="a"]
-	"start" -> "B" [label="b"]
 	"start" -> "C" [label="c"]
-	"BC" -> "ABC" [label="a"]
+	"start" -> "B" [label="b"]
+	"start" -> "A" [label="a"]
+	"C" -> "AC" [label="a"]
+	"C" -> "BC" [label="b"]
+	"B" -> "AB" [label="a"]
+	"B" -> "BC" [label="c"]
 	"AB" -> "ABC" [label="c"]
 	"A" -> "AB" [label="b"]
 	"A" -> "AC" [label="c"]
-	"B" -> "BC" [label="c"]
-	"B" -> "AB" [label="a"]
-	"C" -> "BC" [label="b"]
-	"C" -> "AC" [label="a"]
 	"AC" -> "ABC" [label="b"]
+	"BC" -> "ABC" [label="a"]
 } 
  /* 
-	<A -a-> start / >A -b-> AB
-	<C -c-> start / >C -b-> BC
-	>start -b-> B / >start -c-> C
-	<ABC -c-> AB / <ABC -a-> BC
-	<ABC -b-> AC / <ABC -a-> BC
-	<BC -c-> B / <BC -b-> C
-	>A -c-> AC / >A -b-> AB
-	<AB -b-> A / <AB -a-> B
-	<ABC -a-> BC / <ABC -b-> AC
-	<ABC -c-> AB / <ABC -b-> AC
-	<AC -a-> C / >AC -b-> ABC
-	>start -a-> A / >start -b-> B
-	>C -a-> AC / >C -b-> BC
-	<AC -c-> A / <AC -a-> C
-	>B -c-> BC / >B -a-> AB
-	>A -b-> AB / >A -c-> AC
-	<AB -a-> B / >AB -c-> ABC
-	<ABC -a-> BC / <ABC -c-> AB
-	<B -b-> start / >B -c-> BC
-	>start -a-> A / >start -c-> C
-	<ABC -b-> AC / <ABC -c-> AB
-	<BC -b-> C / >BC -a-> ABC
-	<B -b-> start / >B -a-> AB
-	<C -c-> start / >C -a-> AC
-	<AC -c-> A / >AC -b-> ABC
-	<A -a-> start / >A -c-> AC
-	<AB -b-> A / >AB -c-> ABC
-	>start -c-> C / >start -a-> A
-	<BC -b-> C / <BC -c-> B
-	>C -b-> BC / >C -a-> AC
-	>start -b-> B / >start -a-> A
-	>start -c-> C / >start -b-> B
-	<BC -c-> B / >BC -a-> ABC
-	>B -a-> AB / >B -c-> BC
-	<AC -a-> C / <AC -c-> A
-	<AB -a-> B / <AB -b-> A
+	> B -c-> BC / < B -b-> start
+	> A -b-> AB / < A -a-> start
+	> C -a-> AC / < C -c-> start
+	> start -c-> C / > start -a-> A
+	> BC -a-> ABC / < BC -b-> C
+	> AC -b-> ABC / < AC -a-> C
+	> AC -b-> ABC / < AC -c-> A
+	< ABC -a-> BC / < ABC -b-> AC
+	< ABC -a-> BC / < ABC -c-> AB
+	> AB -c-> ABC / < AB -a-> B
+	> B -a-> AB / > B -c-> BC
+	> A -c-> AC / < A -a-> start
+	> start -c-> C / > start -b-> B
+	> AB -c-> ABC / < AB -b-> A
+	< ABC -b-> AC / < ABC -c-> AB
+	> C -a-> AC / > C -b-> BC
+	> B -a-> AB / < B -b-> start
+	< AC -a-> C / < AC -c-> A
+	> start -a-> A / > start -b-> B
+	> BC -a-> ABC / < BC -c-> B
+	< BC -c-> B / < BC -b-> C
+	< AB -a-> B / < AB -b-> A
+	> C -b-> BC / < C -c-> start
+	> A -b-> AB / > A -c-> AC
 */

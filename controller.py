@@ -1,3 +1,4 @@
+from PIL.Image import FASTOCTREE
 from graphviz import Source 
 import copy
 from dot_parser.main import main as parse
@@ -37,9 +38,9 @@ class Controller:
                 for error in errors['SP']:
                     start, label, end, is_forward = error
                     if end == None:
-                        log.append(start+" should have a "+"forward" if is_forward else "backward" +" transiction labbeled "+label+" to a state")
+                        log.append("- "+start+" should have a "+"forward" if is_forward else "backward" +" transiction labbeled "+label+" to a state")
                     else:
-                        log.append('Can\'t find '+EdgeToString(error))
+                        log.append('- Can\'t find '+EdgeToString(error))
 
         if properties['BTI'].get():
             errors['BTI']=set()
@@ -48,7 +49,7 @@ class Controller:
                 log.append('BTI holds')
             else:
                 for edge1, edge2 in errors['BTI']:
-                    log.append(EdgeToString(edge1)+' and '+EdgeToString(edge2)+' are not indipendent')
+                    log.append("- "+EdgeToString(edge1)+' and '+EdgeToString(edge2)+' are not indipendent')
 
         if properties['WF'].get():
             errors['WF']=set()
@@ -57,7 +58,7 @@ class Controller:
                 log.append('WF holds')
             else:
                 for error in errors['WF']:
-                    log.append(EdgeToString(error)+' creates a cycle')
+                    log.append("- "+EdgeToString(error)+' creates a cycle')
 
         if properties['CPI'].get():
             errors['CPI']=set()
@@ -65,8 +66,17 @@ class Controller:
             if CheckCPI(self.graph, errors['CPI']):
                 log.append('CPI holds')
             else:
-                for edge1, edge2 in errors['CPI']:
-                    log.append(EdgeToString(edge1)+' and '+EdgeToString(edge2)+' are not indipendent')
+                missing_indipendence = ""
+                ltsi_error = "CLOSURE UNDER CPI CANNOT BE PERFORMED!"
+                print_error = False
+                for edge1, edge2, rev, edge in errors['CPI']:
+                    if rev == edge:
+                        print_error = True
+                        ltsi_error = ltsi_error + "\n- The relation "+EdgeToString(edge1)+" ι "+EdgeToString(edge2)+" would imply "+EdgeToString(rev)+" ι "+EdgeToString(edge)+", but this is not possible since independence is irreflexive"
+                    else:
+                        missing_indipendence = missing_indipendence + "\n- " + EdgeToString(edge1)+' ι '+EdgeToString(edge2)+' but '+EdgeToString(rev)+" and "+EdgeToString(edge)+ " are not"
+                
+                log.append(ltsi_error if print_error else missing_indipendence)
 
         if properties['IRE'].get():
             errors['IRE']=set()
@@ -75,7 +85,7 @@ class Controller:
                 log.append('IRE holds')
             else:
                 for edge1, edge2 in errors['IRE']:
-                    log.append(EdgeToString(edge1)+' and '+EdgeToString(edge2)+' are not indipendent')
+                    log.append("- "+EdgeToString(edge1)+' and '+EdgeToString(edge2)+' are not indipendent')
 
         return log, errors
                 
@@ -98,8 +108,8 @@ class Controller:
                         
         if 'CPI' in errors:
             for error in errors['CPI']:
-                edge1, edge2 = error
-                new_graph.AddIndipendence(edge1, edge2)
+                edge1, edge2, rev, edge = error
+                if rev != edge: new_graph.AddIndipendence(rev, edge)
 
         if 'IRE' in errors:
             for error in errors['IRE']:
