@@ -1,3 +1,4 @@
+from random import randint
 class Graph:
     #to save memory, edges are saved as an item in a list of labels, in a dictionary with keys (node1, node2)
     #functions return edges in the format (start, label, end, is_forward) 
@@ -86,11 +87,10 @@ class Graph:
     def AddIndipendence(self, edge1, edge2):
         """Add indipendence between two input nodes"""
         if not (edge2, edge1) in self.indipendence:
-            self.indipendence.add((edge1, edge2))
+            if edge1!=edge2: self.indipendence.add((edge1, edge2))
 
     def AreIndipendent(self, edge1, edge2):
         """Return true if the transitions are indipendent"""
-        if edge1 == edge2: return False
         for i in self.indipendence:
             if i == (edge1, edge2) or i == (edge2, edge1):
                 return True
@@ -113,7 +113,6 @@ class Graph:
                     #if edge1 == edge2: continue
 
                     (start2, label2, end2, is_forward2) = edge2
-                    self.NewEvent(edge2)
                     
                     for end in self.nodes:
                         first = (end1, label2, end, is_forward2)
@@ -124,12 +123,9 @@ class Graph:
                             cond = []
                             # we check if there is indipendence at each angle 
                             cond.append((edge1, edge2))
-                            cond.append(((end1, label1, start, not is_forward1), 
-                                (end1, label2, end, is_forward2)))
-                            cond.append(((end2, label2, start, not is_forward2), 
-                                (end2, label1, end, is_forward1)))
-                            cond.append(((end, label2, end1, not is_forward2), 
-                                (end, label1, end2, not is_forward1)))
+                            cond.append((self.Reverse(edge1), first))
+                            cond.append((self.Reverse(edge2), second))
+                            cond.append((self.Reverse(first), self.Reverse(second)))
 
                             indipendent = True
                             for condition in cond:
@@ -140,10 +136,6 @@ class Graph:
                             if indipendent and ((is_forward1 == is_forward2 and end1 != end2) or (is_forward1 == is_forward2 and start != end)):
                                     self.AddToEvent(edge1, second)
                                     self.AddToEvent(edge2, first)
-
-                            else:
-                                self.NewEvent(first)
-                                self.NewEvent(second)
 
     def NewEvent(self, edge):
         """Add new event, do nothing if already exists"""
@@ -188,20 +180,29 @@ class Graph:
             if edge in event: return event
         return None
 
-    def ToString(self):
+    def ToString(self, color_events=True):
         """Return the graph as a string"""
         graph = 'digraph G {\n'
 
         edges = ''
 
+        colors = []
+        n_events = len(self.events)
+
+        for i in range(n_events):
+            colors.append('#%06X' % randint(0, 0xFFFFFF))
+
         for start in self.nodes:
             for end in self.nodes:
                 if not (start, end) in self.edges: continue
                 for label in self.edges[(start, end)]:
-                    if start == self.startNode:
-                        graph = graph + '\t"' + start + '" -> "' + end +'" [label="'+label+'"]\n'
-                    else:
-                        edges = edges + '\t"' + start + '" -> "' + end +'" [label="'+label+'"]\n'
+                    color = None
+                    string = ""
+                    for i in range(n_events):
+                        if (start, label, end, True) in self.events[i]: break
+                    string = '\t"' + start + '" -> "' + end +'" [label="'+label+'", color="'+colors[i]+'"]\n'
+                    if start == self.startNode: graph = graph + string
+                    else: edges = edges + string
         
         graph = graph + edges + "} \n /* \n"
         

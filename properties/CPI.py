@@ -31,7 +31,7 @@ def CheckCPI(graph:Graph, errors:set = None):
                         second = (end2, label1, end, is_forward1)
 
                         #we know t and u exist, if t ι u and t' and u' exist => u' ι nt
-                        if graph.EdgeExists(first) and graph.EdgeExists(second) and (graph.AreIndipendent(edge1, edge2)  or (edge1, edge2) in errors):
+                        if graph.EdgeExists(first) and graph.EdgeExists(second) and (graph.AreIndipendent(edge1, edge2)  or (edge1, edge2) in indipendence_to_add):
                             
                             #if there is not u' ι nt => we save those edges as errors
                             rev1 = graph.Reverse(edge1)
