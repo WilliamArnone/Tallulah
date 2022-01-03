@@ -9,6 +9,7 @@ def main():
     #root.tk.call("wm","iconphoto",root._w,icon)
     c = Controller()
     root = Tk()
+    root.title("Tallulah")
     View(root, c)
     root.mainloop()
 

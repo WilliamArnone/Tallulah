@@ -161,6 +161,7 @@ class View:
     def popUpWindow(self, text, graph, errors):
         """Create a new window with the log infos"""
         root = Tk()
+        root.title("Log")
 
         canvas = Canvas(root)
         canvas.pack(side=LEFT, fill='both', expand=True)
