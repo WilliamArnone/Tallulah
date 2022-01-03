@@ -1,0 +1,9 @@
+digraph g {
+    "start" -> B [label="a"]
+    C -> D [label="a"]
+    E -> F [label="a"]
+    "start" -> C [label="b"]
+    C -> E [label="b"]
+    B -> D [label="b"]
+    D -> F [label="b"]
+}
