@@ -182,6 +182,8 @@ class Graph:
 
     def ToString(self, color_events=True):
         """Return the graph as a string"""
+
+        self.InitEvents()
         graph = 'digraph G {\n'
 
         edges = ''

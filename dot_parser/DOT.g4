@@ -57,15 +57,12 @@ indipendence_edge: Direction identifier '-' identifier '->' identifier ;
 start_identifier : 'start' | '"start"';
 
 
-identifier : String | Quote | Number | start_identifier;
+identifier : Variable | Quote | Number | start_identifier;
 
 Quote: '"' (~["\\] | '\\' .)* '"';
-String: [a-zA-Z] [a-zA-Z0-9]*;
+Variable: [a-zA-Z] [a-zA-Z0-9]*;
 Number : '-'? (('.'[0-9]+) | [0-9]+('.'[0-9]*)?);
 Direction : '<' | '>';
-Uppercase_letter : [A-Z];
-Lowercase_letter : [a-z];
-Digit : [0-9];
 
 WS: [ \t\n\r]+ -> skip;
 

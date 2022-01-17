@@ -18,12 +18,6 @@ class View:
         self.controller = controller
         self.root = root
 
-        menu_bar = Menu(root)
-        file_menu = Menu(menu_bar, tearoff=False)
-        file_menu.add_command(label="Open File",compound=LEFT, command= self.open_file)
-        menu_bar.add_cascade(label="Open",menu=file_menu)
-        root.config(menu=menu_bar)
-
         self.startUI()
 
     def startUI(self):
@@ -49,6 +43,12 @@ class View:
         self.clearScreen()
 
         if self.controller.path == None:
+            
+            menu_bar = Menu(self.root)
+            file_menu = Menu(menu_bar, tearoff=False)
+            file_menu.add_command(label="Open File",compound=LEFT, command= self.open_file)
+            menu_bar.add_cascade(label="Open",menu=file_menu)
+            self.root.config(menu=menu_bar)
 
             # window settings
             self.root.geometry("1000x800")

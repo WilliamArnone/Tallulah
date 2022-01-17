@@ -12,7 +12,7 @@ digraph G {
 	"C" -> "AC" [label="a"]
 	"AC" -> "ABC" [label="b"]
 } 
- /* 
+/* 
 	< AB -a-> B / < AB -b-> A
 	< AC -a-> C / < AC -c-> A
 	< BC -c-> B / < BC -b-> C
