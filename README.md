@@ -8,7 +8,7 @@
 
 ### Running
 
-Open a terminal in the main folder of Corinne and type:
+Open a terminal in the main folder of Tallulah and type:
 ```sh
 python3 main.py
 ```
