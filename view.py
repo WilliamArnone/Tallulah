@@ -18,18 +18,18 @@ class View:
         self.controller = controller
         self.root = root
 
-        self.startUI()
+        self.StartUI()
 
-    def startUI(self):
+    def StartUI(self):
         """Set up of the starting page"""
-        self.clearScreen()
+        self.ClearScreen()
         self.root.geometry("350x250")
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_columnconfigure(1, weight=0)
         self.root.grid_rowconfigure(0, weight=1)
         self.root.grid_rowconfigure(1, weight=1)
 
-        buttonLoad = ttk.Button(self.root, text="Open .DOT file", command=self.open_file)
+        buttonLoad = ttk.Button(self.root, text="Open .DOT file", command=self.OpenFile)
         buttonLoad.grid(row=0, column=0, sticky=S, pady=5)
         buttonExit  = ttk.Button(self.root, text="Quit", command=self.root.destroy)
         buttonExit.grid(row=1, column=0, sticky=N, pady=5)
@@ -37,16 +37,16 @@ class View:
         self.widgets.append(buttonLoad)
         self.widgets.append(buttonExit)
 
-    def mainUI(self, path):
+    def MainUI(self, path):
         """Set up the view with the graph and the properties"""
 
-        self.clearScreen()
+        self.ClearScreen()
 
         if self.controller.path == None:
             
             menu_bar = Menu(self.root)
             file_menu = Menu(menu_bar, tearoff=False)
-            file_menu.add_command(label="Open File",compound=LEFT, command= self.open_file)
+            file_menu.add_command(label="Open File",compound=LEFT, command= self.OpenFile)
             menu_bar.add_cascade(label="Open",menu=file_menu)
             self.root.config(menu=menu_bar)
 
@@ -106,24 +106,24 @@ class View:
             ire = Checkbutton(properties_frame, text="IRE - Independence Respects Events", variable=properties['IRE'])
             ire.pack(anchor=W)
 
-            btnCheck = Button(properties_frame, text="Check", command=lambda:self.checkProperties(properties))
+            btnCheck = Button(properties_frame, text="Check", command=lambda:self.CheckProperties(properties))
             btnCheck.pack()
         
-        errors = self.controller.setPath(path)
+        errors = self.controller.SetPath(path)
 
         if errors:
             messagebox.showerror("Error"," ".join(map(str, errors)))
             return
 
         # graph image
-        imagePath = self.controller.getGraphImage()
+        imagePath = self.controller.GetGraphImage()
         image = ImageTk.PhotoImage(Image.open(imagePath))
         lblImage = Label(image=image)
         lblImage.image=image
         lblImage.grid(row=0, column=0, rowspan=2, sticky=W+E+S+N)
         self.widgets.append(lblImage)
 
-        txtIndipendence = Label(self.indipency_frame, border=0, justify=LEFT, text=self.controller.GetIndipendenceString())
+        txtIndipendence = Label(self.indipency_frame, border=0, justify=LEFT, text=self.controller.graph.GetIndipendenceString())
         txtIndipendence.pack(fill="both")
         self.widgets.append(txtIndipendence)
 
@@ -132,33 +132,28 @@ class View:
         self.canvas.configure(scrollregion=self.canvas.bbox('all'))
 
         
-
-
-    def clearScreen(self):
+    def ClearScreen(self):
         """Destroy the start ui, or the image of the main ui"""
         for widget in self.widgets:
             widget.destroy()
         self.widgets = []
 
-    def open_file(self):
+    def OpenFile(self):
         """Open dot file and set the ui"""
         path = filedialog.askopenfilename(initialdir=".",
         		                              filetypes=(("DOT graph", "*.gv *.dot"), ("all files", "*.*")),
         		                              title="Choose a file."
         		                              )
         if path == '': return
-        self.mainUI(path)
+        self.MainUI(path)
 
-    def checkProperties(self, properties):
+    def CheckProperties(self, properties):
         """Check all properties and prints a log"""
-        log, errors = self.controller.checkProperties(properties)
-        logString = ''
+        log, errors = self.controller.CheckProperties(properties)
         new_graph = copy.deepcopy(self.controller.graph)
+        self.PopUpWindow(log, new_graph, errors)
 
-        for msg in log: logString = logString + msg + '\n'
-        self.popUpWindow(logString, new_graph, errors)
-
-    def popUpWindow(self, text, graph, errors):
+    def PopUpWindow(self, text, graph, errors):
         """Create a new window with the log infos"""
         root = Tk()
         root.title("Log")
@@ -181,15 +176,15 @@ class View:
         l = Label(frame, text=text, justify=LEFT, border=0)
         l.pack(fill='both', expand=True)
 
-        btn = Button(frame, text="Save", command=lambda: self.saveLog(text))
+        btn = Button(frame, text="Save", command=lambda: self.SaveLog(text))
         btn.pack(pady=5)
 
-        btn = Button(frame, text="Apply", command=lambda: self.generateProperties(graph, errors))
+        btn = Button(frame, text="Apply", command=lambda: self.ForceProperties(graph, errors))
         btn.pack(pady=5)
 
         root.mainloop()
 
-    def saveLog(self, text):
+    def SaveLog(self, text):
         """Save text as a txt file"""
         dialog = filedialog.asksaveasfile(mode='w', title="Save Log", defaultextension=".txt", filetypes=(("Text FIle", "*.txt"), ("all files", "*.*")))
         if dialog is None: 
@@ -197,9 +192,9 @@ class View:
         dialog.write(text)
         dialog.close() 
 
-    def generateProperties(self, graph, errors):
+    def ForceProperties(self, graph, errors):
         """Check properties and save a DOT file with the changes"""
-        text2save = self.controller.generateProperties(graph, errors)
+        text2save = self.controller.ForceProperties(graph, errors)
         dialog = filedialog.asksaveasfile(mode='w', title="Save Graph", defaultextension=".dot", filetypes=(("DOT graph", "*.gv *.dot"), ("all files", "*.*")))
         if dialog is None: 
             return

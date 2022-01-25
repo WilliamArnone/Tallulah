@@ -10,10 +10,10 @@ def CheckIRE(graph:Graph, errors:set = None):
         event = graph.GetEventClass(edge1)
         for edge in event:
             if not graph.AreIndipendent(edge, edge2):
-                errors.add((edge, edge2))
+                errors.add((edge1, edge, edge2))
         #we must make 2 searches, one for edge1 and one for edge2
         event = graph.GetEventClass(edge2)
         for edge in event:
             if not graph.AreIndipendent(edge, edge1):
-                errors.add((edge, edge1))
+                errors.add((edge2, edge, edge1))
     return len(errors)==0

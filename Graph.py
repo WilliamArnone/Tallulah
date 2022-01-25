@@ -1,3 +1,4 @@
+from gettext import translation
 from random import randint
 class Graph:
     #to save memory, edges are saved as an item in a list of labels, in a dictionary with keys (node1, node2)
@@ -10,8 +11,6 @@ class Graph:
         self.events = []
         self.nodes = set()
         self.indipendence = set()
-        self.startNode = 'start'
-        self.nodes.add(self.startNode)
 
     def AddNode(self, *nodes):
         """Add node to the set of nodes"""
@@ -31,6 +30,13 @@ class Graph:
         if not label in self.edges[(start, end)]:
             self.edges[(start, end)].append(label)
 
+        new_event = set()
+        new_event.add((start, label, end, True))
+        self.events.append(new_event)
+        new_event = set()
+        new_event.add((end, label, start, False))
+        self.events.append(new_event)
+
     def RemoveEdge(self, edge):
         """Remove edge from graph"""
         lst = list(edge)
@@ -41,6 +47,18 @@ class Graph:
         if not is_forward: start, end = end, start
         if (start, end) in self.edges:
             self.edges[(start, end)].remove(label)
+
+        for edge1, edge2 in self.indipendence:
+            if edge == edge2 or edge == edge1 or ReverseEdge(edge) == edge2 or ReverseEdge(edge) == edge1: 
+                self.indipendence.remove((edge1, edge2))
+
+        for event in self.events:
+            if edge in event:
+                if len(event==1): self.events.remove(event)
+                else: event.remove(edge)
+            if ReverseEdge(edge) in event:
+                if len(event==1): self.events.remove(event)
+                else: event.remove(ReverseEdge(edge))
 
     def GetEdgesFrom(self, node, all=True, only_forward=True):
         """Return forward, backward or both transitions from input node"""
@@ -96,11 +114,6 @@ class Graph:
                 return True
         return False
 
-    def Reverse(self, edge):
-        """Return the reverse transition of the input"""
-        start, label, end, is_forward = edge
-        return (end, label, start, not is_forward)
-
     def InitEvents(self):
         """Initialize event classes"""
         for start in self.nodes:
@@ -108,7 +121,6 @@ class Graph:
 
             for edge1 in edges:
                 (start1, label1, end1, is_forward1) = edge1
-                self.NewEvent(edge1)
                 for edge2 in edges:
                     #if edge1 == edge2: continue
 
@@ -123,9 +135,9 @@ class Graph:
                             cond = []
                             # we check if there is indipendence at each angle 
                             cond.append((edge1, edge2))
-                            cond.append((self.Reverse(edge1), first))
-                            cond.append((self.Reverse(edge2), second))
-                            cond.append((self.Reverse(first), self.Reverse(second)))
+                            cond.append((ReverseEdge(edge1), first))
+                            cond.append((ReverseEdge(edge2), second))
+                            cond.append((ReverseEdge(first), ReverseEdge(second)))
 
                             indipendent = True
                             for condition in cond:
@@ -137,15 +149,6 @@ class Graph:
                                     self.AddToEvent(edge1, second)
                                     self.AddToEvent(edge2, first)
 
-    def NewEvent(self, edge):
-        """Add new event, do nothing if already exists"""
-        # don't add the event if the edge already has one
-        for event in self.events:
-            if edge in event: return event
-        new_event = set()
-        new_event.add(edge)
-        self.events.append(new_event)
-        return new_event
 
     def AddToEvent(self, edge1, edge2):
         """Union between events of two input transitions"""
@@ -169,16 +172,10 @@ class Graph:
         else: union.add(edge2)
         self.events.append(union)
 
-    # def AreSameEvent(self, edge1, edge2):
-    #     for event in self.events:
-    #         if edge1 in event: return edge2 in event
-    #     return False
-
     def GetEventClass(self, edge):
         """Return the event class of the input edge"""
         for event in self.events:
             if edge in event: return event
-        return None
 
     def ToString(self, color_events=True):
         """Return the graph as a string"""
@@ -186,27 +183,49 @@ class Graph:
         self.InitEvents()
         graph = 'digraph G {\n'
 
-        edges = ''
-
+        colors_default = ['#bfef45',
+            '#800000',
+            '#000075',
+            '#42d4f4',
+            '#7698B3',
+            '#aaffc3',
+            '#ffe119',
+            '#808000',
+            '#008080',
+            '#f58231',
+            '#023C40',
+            '#dcbeff',
+            '#469990',
+            '#3cb44b',
+            '#481620',
+            '#DE3163',]
         colors = []
         n_events = len(self.events)
 
+        #creates random colors
         for i in range(n_events):
             colors.append('#%06X' % randint(0, 0xFFFFFF))
 
+        for i in range(min(len(colors), len(colors_default))):
+            colors[i]=colors_default[i]
+
+
+        #first 16 colors are not random
         for start in self.nodes:
             for end in self.nodes:
                 if not (start, end) in self.edges: continue
                 for label in self.edges[(start, end)]:
-                    color = None
-                    string = ""
+
+                    #we don't want to use colors for backward events
+                    backward_counter = 0
+
                     for i in range(n_events):
+                        transition = list(list(self.events[i])[0])
+                        if(not transition[3]): backward_counter = backward_counter + 1
                         if (start, label, end, True) in self.events[i]: break
-                    string = '\t"' + start + '" -> "' + end +'" [label="'+label+'", color="'+colors[i]+'"]\n'
-                    if start == self.startNode: graph = graph + string
-                    else: edges = edges + string
+                    graph = graph + '\t"' + start + '" -> "' + end +'" [label="'+label+'", color="'+colors[i-backward_counter]+'"]\n'
         
-        graph = graph + edges + "} \n /* \n"
+        graph = graph + "} \n /* \n"
         
         for (start1, label1, end1, is_forward1), (start2, label2, end2, is_forward2) in self.indipendence:
             graph = graph + '\t' + ('> ' if is_forward1 else '< ') + start1 + ' -' + label1 + '-> '+ end1 +' / '
@@ -214,3 +233,22 @@ class Graph:
 
         graph = graph + '*/'
         return graph
+       
+    def GetIndipendenceString(self):
+        """Return indipendece between transition in a printable string"""
+        text = ""
+        for indipendence in self.indipendence:
+            edge1, edge2 = indipendence
+            text = text+EdgeToString(edge1)+" ι "+EdgeToString(edge2)+"\n"
+        return text
+
+def ReverseEdge(edge):
+        """Return the reverse transition of the input"""
+        start, label, end, is_forward = edge
+        return (end, label, start, not is_forward)
+
+def EdgeToString(edge):
+    """Return a printable string of an edge"""
+    start, label, end, is_forward = edge
+    sign = '-' if is_forward else '~'
+    return start+sign+label+sign+'>'+end

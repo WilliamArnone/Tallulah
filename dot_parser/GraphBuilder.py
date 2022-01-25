@@ -23,12 +23,12 @@ class GraphBuilder(DOTListener):
         self.edges = []
         self.labels = []
 
-    def enterEdge(self):
+    def enterEdge_stmt(self, ctx:DOTParser.Edge_stmtContext):
         self.nodes_order.append(set())
         self.nodes_depth.append(set())
         self.edges.append(set())
 
-    def exitEdge(self):
+    def exitEdge_stmt(self, ctx:DOTParser.Edge_stmtContext):
         # when an edge declaration ends we need to create an edge between every node to the next
         label = self.labels.pop()
         self.nodes_order.pop()
@@ -40,22 +40,6 @@ class GraphBuilder(DOTListener):
         for edge in self.edges.pop():
             lst = list(edge)
             self.graph.AddEdge((lst[0], label, lst[1]))
-
-    def enterStart_edge(self, ctx:DOTParser.Start_edgeContext):
-        self.enterEdge()
-        self.nodes_order[-1].add('start')
-        self.nodes_depth[-1].add('start')
-
-    def exitStart_edge(self, ctx:DOTParser.Start_edgeContext):
-        self.exitEdge()
-
-
-    def enterEdge_stmt(self, ctx:DOTParser.Edge_stmtContext):
-        self.enterEdge()
-
-
-    def exitEdge_stmt(self, ctx:DOTParser.Edge_stmtContext):
-        self.exitEdge()
         
     def enterSubgraph_stmt(self, ctx:DOTParser.Subgraph_stmtContext):
         self.nodes_depth.append(set())

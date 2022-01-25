@@ -1,6 +1,7 @@
 from PIL.Image import FASTOCTREE
 from graphviz import Source 
 import copy
+from Graph import EdgeToString
 from dot_parser.main import main as parse
 from properties.BTI import CheckBTI
 from properties.CPI import CheckCPI
@@ -12,59 +13,79 @@ class Controller:
     path = None
     graph = None
 
-    def setPath(self, path):
+    def SetPath(self, path):
         """Set path oh the file to be read and parse the graph"""
         self.path = path
         graph, errors = parse(self.path)
         self.graph = graph
         return errors
 
-    def getGraphImage(self):
+    def GetGraphImage(self):
         """Save graph image and the return path to image"""
         s = Source.from_file(self.path)
         s.render(self.path, format='png',view=False)
         return self.path+'.png'
 
-    def checkProperties(self, properties):
+    def CheckProperties(self, properties):
         """Check graph properties and print error log"""
-        log = []
         errors = {}
         if properties['SP'].get():
             errors['SP']=set()
-            log.append('SP - Square Property:')
-            if CheckSP(self.graph, errors['SP']):
-                log.append('SP holds')
-            else:
-                for error in errors['SP']:
-                    start, label, end, is_forward = error
-                    if end == None:
-                        log.append("- "+start+" should have a "+"forward" if is_forward else "backward" +" transiction labbeled "+label+" to a state")
-                    else:
-                        log.append('- Can\'t find '+EdgeToString(error))
+            CheckSP(self.graph, errors['SP'])
 
         if properties['BTI'].get():
             errors['BTI']=set()
-            log.append('\nBTI - Backward Transitions are Indipendent:')
-            if CheckBTI(self.graph, errors['BTI']):
-                log.append('BTI holds')
-            else:
-                for edge1, edge2 in errors['BTI']:
-                    log.append("- "+EdgeToString(edge1)+' and '+EdgeToString(edge2)+' are not indipendent')
+            CheckBTI(self.graph, errors['BTI'])
 
         if properties['WF'].get():
             errors['WF']=set()
-            log.append('\nWF - Well-Foundedness:')
-            if CheckWF(self.graph, errors['WF']):
-                log.append('WF holds')
-            else:
-                for error in errors['WF']:
-                    log.append("- "+EdgeToString(error)+' creates a cycle')
+            CheckWF(self.graph, errors['WF'])
 
         if properties['CPI'].get():
             errors['CPI']=set()
-            log.append('\nCPI - Coinitial Propagation of Indipendence:')
-            if CheckCPI(self.graph, errors['CPI']):
-                log.append('CPI holds')
+            CheckCPI(self.graph, errors['CPI'])
+        
+        if properties['IRE'].get():
+            errors['IRE']=set()
+            CheckIRE(self.graph, errors['IRE'])
+
+        return self.ErrorsToString(errors), errors
+                
+    def ErrorsToString(self, errors):
+        log = ""
+        if 'SP' in errors:
+            log = log + 'SP - Square Property:'+'\n'
+            if len(errors['SP'])==0:
+                log = log + 'SP holds'+'\n'
+            else:
+                for ind1, ind2, error in errors['SP']:
+                    start, label, end, is_forward = error
+                    if end == None:
+                        log = log + '- ' + EdgeToString(ind1)+" ι "+EdgeToString(ind2)+" but they don't have any valid t' or u'"
+                        #log = log + "- "+start+" should have a "+"forward" if is_forward else "backward" +" transiction labbeled "+label+" to a state"+'\n'
+                    else:
+                        log = log + '- ' + EdgeToString(ind1)+" ι "+EdgeToString(ind2)+ ' but they don\'t have common end, could be added '+EdgeToString(error)+'\n'
+
+        if 'BTI' in errors:
+            log = log + '\nBTI - Backward Transitions are Indipendent:'+'\n'
+            if len(errors['BTI'])==0:
+                log = log + 'BTI holds'+'\n'
+            else:
+                for edge1, edge2 in errors['BTI']:
+                    log = log + "- "+EdgeToString(edge1)+' and '+EdgeToString(edge2)+' are not indipendent'+'\n'
+
+        if 'WF' in errors:
+            log = log + '\nWF - Well-Foundedness:'+'\n'
+            if len(errors['WF'])==0:
+                log = log + 'WF holds'+'\n'
+            else:
+                for error in errors['WF']:
+                    log = log + "- "+EdgeToString(error)+' creates a cycle'+'\n'
+
+        if 'CPI' in errors:
+            log = log + '\nCPI - Coinitial Propagation of Indipendence:'+'\n'
+            if len(errors['CPI'])==0:
+                log = log + 'CPI holds'+'\n'
             else:
                 missing_indipendence = ""
                 ltsi_error = "CLOSURE UNDER CPI CANNOT BE PERFORMED!"
@@ -76,24 +97,23 @@ class Controller:
                     else:
                         missing_indipendence = missing_indipendence + "\n- " + EdgeToString(edge1)+' ι '+EdgeToString(edge2)+' but '+EdgeToString(rev)+" and "+EdgeToString(edge)+ " are not"
                 
-                log.append(ltsi_error if print_error else missing_indipendence)
+                log = log + (ltsi_error if print_error else missing_indipendence)+'\n'
 
-        if properties['IRE'].get():
-            errors['IRE']=set()
-            log.append('\nIRE - Independence Respects Events:')
-            if CheckIRE(self.graph, errors['IRE']):
-                log.append('IRE holds')
+        if 'IRE' in errors:
+            log = log + '\nIRE - Independence Respects Events:'+'\n'
+            if len(errors['IRE'])==0:
+                log = log + 'IRE holds'+'\n'
             else:
-                for edge1, edge2 in errors['IRE']:
-                    log.append("- "+EdgeToString(edge1)+' and '+EdgeToString(edge2)+' are not indipendent')
+                for ind, edge1, edge2 in errors['IRE']:
+                    log = log + "- "+EdgeToString(edge1)+" ~ "+EdgeToString(ind)+" ι "+EdgeToString(edge2)+" but "+EdgeToString(edge1)+' and '+EdgeToString(edge2)+' are not indipendent'+'\n'
+        
+        return log
 
-        return log, errors
-                
-    def generateProperties(self, graph, errors):
+    def ForceProperties(self, graph, errors):
         """Check graph properties and return a new graph with the selected properties"""
         new_graph = copy.deepcopy(graph)
         if 'SP' in errors:
-            for error in errors['SP']:
+            for ind1, ind2, error in errors['SP']:
                 start, label, end, forward = error
                 if(end != None): new_graph.AddEdge(error)
                         
@@ -112,23 +132,7 @@ class Controller:
                 if rev != edge: new_graph.AddIndipendence(rev, edge)
 
         if 'IRE' in errors:
-            for error in errors['IRE']:
-                edge1, edge2 = error
+            for ev, edge1, edge2 in errors['IRE']:
                 new_graph.AddIndipendence(edge1, edge2)
 
         return new_graph.ToString()
-    
-    def GetIndipendenceString(self):
-        """Return indipendece between transition in a printable string"""
-        text = ""
-        for indipendence in self.graph.indipendence:
-            edge1, edge2 = indipendence
-            text = text+EdgeToString(edge1)+" ι "+EdgeToString(edge2)+"\n"
-        return text
-
-
-def EdgeToString(edge):
-    """Return a printable string of an edge"""
-    start, label, end, is_forward = edge
-    sign = '-' if is_forward else '~'
-    return start+sign+label+sign+'>'+end

@@ -1,4 +1,4 @@
-from Graph import Graph
+from Graph import Graph, ReverseEdge
 
 #t: P-α->Q and u: P-β->R and u': Q-β->S and t': R-α->S with t ι u  => u' ι nt
 def CheckCPI(graph:Graph, errors:set = None):
@@ -34,14 +34,14 @@ def CheckCPI(graph:Graph, errors:set = None):
                         if graph.EdgeExists(first) and graph.EdgeExists(second) and (graph.AreIndipendent(edge1, edge2)  or (edge1, edge2) in indipendence_to_add):
                             
                             #if there is not u' ι nt => we save those edges as errors
-                            rev1 = graph.Reverse(edge1)
+                            rev1 = ReverseEdge(edge1)
                             if not (graph.AreIndipendent(rev1, first) or (rev1,first) in indipendence_to_add):
                                 indipendence_to_add.append((rev1, first))
                                 indipendence_to_add.append((first, rev1))
                                 errors.add((edge1, edge2, rev1, first))
                                 keep_search = True
 
-                            rev2 = graph.Reverse(edge2)
+                            rev2 = ReverseEdge(edge2)
                             if not (graph.AreIndipendent(rev2, second) or (rev2,second) in indipendence_to_add):
                                 indipendence_to_add.append((rev2, second))
                                 indipendence_to_add.append((second, rev2))

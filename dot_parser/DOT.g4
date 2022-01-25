@@ -4,7 +4,7 @@
 */
 grammar DOT;
 
-graph   :  'strict'? 'digraph' identifier '{' start ';'? stmt_list '}' ('/*' indipendence_list? '*/')?;
+graph   :  'strict'? 'digraph' identifier '{' stmt_list '}' ('/*' indipendence_list? '*/')?;
 
 
 stmt_list:  (stmt ';'? stmt_list)? ;
@@ -30,12 +30,6 @@ a_list : assignment (';'|',')? a_list?;
 
 a_label : ('label' | '"label"') '=' identifier (';'|',')? a_list?;
 
-start: start_node | start_edge;
-
-start_node: start_identifier port?;
-
-start_edge: start_identifier edgeRHS attr_label;
-
 edge_stmt : (node_id | subgraph_stmt) edgeRHS attr_label;
 
 edgeRHS : '->' (node_id | subgraph_stmt) edgeRHS?;
@@ -54,10 +48,7 @@ indipendence: indipendence_edge'/'indipendence_edge;
 
 indipendence_edge: Direction identifier '-' identifier '->' identifier ;
 
-start_identifier : 'start' | '"start"';
-
-
-identifier : Variable | Quote | Number | start_identifier;
+identifier : Variable | Quote | Number ;
 
 Quote: '"' (~["\\] | '\\' .)* '"';
 Variable: [a-zA-Z] [a-zA-Z0-9]*;

@@ -37,21 +37,21 @@ def CheckSP(graph:Graph, errors:set = None):
                             #SP is valid, no need to search further
                             temp = []
                             break
-                        elif not firstExist:
+                        elif secondExist and not firstExist:
                             #if SP doesn't hold, it's because u' is missing
                             temp.append(first)
-                        elif not secondExist:
+                        elif firstExist and not secondExist:
                             #if SP doesn't hold, it's because t' is missing
                             temp.append(second)
 
                     if not found:
                         #there is no possible candidate for S
-                        errors.add((end1, label2, None, is_forward2))
-                        errors.add((end2, label1, None, is_forward1))
+                        errors.add((edge1, edge2, (end1, label2, None, is_forward2)))
+                        #errors.add((edge1, edge2, (end2, label1, None, is_forward1)))
                     else:
                         #store as error the previous found edges
                         for error in temp:
-                            errors.add(error)
+                            errors.add((edge1, edge2, error))
 
                         
     return len(errors)==0

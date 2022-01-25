@@ -89,33 +89,6 @@ class DOTListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by DOTParser#start.
-    def enterStart(self, ctx:DOTParser.StartContext):
-        pass
-
-    # Exit a parse tree produced by DOTParser#start.
-    def exitStart(self, ctx:DOTParser.StartContext):
-        pass
-
-
-    # Enter a parse tree produced by DOTParser#start_node.
-    def enterStart_node(self, ctx:DOTParser.Start_nodeContext):
-        pass
-
-    # Exit a parse tree produced by DOTParser#start_node.
-    def exitStart_node(self, ctx:DOTParser.Start_nodeContext):
-        pass
-
-
-    # Enter a parse tree produced by DOTParser#start_edge.
-    def enterStart_edge(self, ctx:DOTParser.Start_edgeContext):
-        pass
-
-    # Exit a parse tree produced by DOTParser#start_edge.
-    def exitStart_edge(self, ctx:DOTParser.Start_edgeContext):
-        pass
-
-
     # Enter a parse tree produced by DOTParser#edge_stmt.
     def enterEdge_stmt(self, ctx:DOTParser.Edge_stmtContext):
         pass
@@ -194,15 +167,6 @@ class DOTListener(ParseTreeListener):
 
     # Exit a parse tree produced by DOTParser#indipendence_edge.
     def exitIndipendence_edge(self, ctx:DOTParser.Indipendence_edgeContext):
-        pass
-
-
-    # Enter a parse tree produced by DOTParser#start_identifier.
-    def enterStart_identifier(self, ctx:DOTParser.Start_identifierContext):
-        pass
-
-    # Exit a parse tree produced by DOTParser#start_identifier.
-    def exitStart_identifier(self, ctx:DOTParser.Start_identifierContext):
         pass
 
 
