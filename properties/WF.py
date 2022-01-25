@@ -3,14 +3,14 @@ from Graph import Graph
 
 #No infinite reverse computation
 #we do not have Pi:= Pi+1-αi->Pi for all i = 0,1,...
-def CheckWF(graph:Graph, errors:set = None, node = None, visited = None):
+def CheckWF(graph:Graph, node = None, visited = None):
     """Check WF property and return true if holds"""
     #a dot file is finite, the only way to make infinite paths is to make a cycle
     #initialize variables
     is_first=False
     to_be_visited = None
     
-    if errors == None: errors = set()
+    errors = set()
     if visited == None: visited = []
     if node == None: 
         is_first=True
@@ -33,4 +33,4 @@ def CheckWF(graph:Graph, errors:set = None, node = None, visited = None):
 
     #we return true while visiting the graph because we want to find wich edge creates a cycle
     #we don't want to stop at the first cycle found
-    return len(errors)==0 if len(visited)==0 else True
+    return errors if len(visited)==0 else True

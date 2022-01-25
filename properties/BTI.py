@@ -1,9 +1,9 @@
 from Graph import Graph
 
 #t: P~α~>Q and t': P~β~>Q' and t=/=t'  =>  t ι t'
-def CheckBTI(graph:Graph, errors:set = None):
+def CheckBTI(graph:Graph):
     """Check BTI property and return true if holds"""
-    if errors == None: errors = set()
+    errors = set()
 
     #node is the P of the definition
     for node in graph.nodes:
@@ -16,4 +16,4 @@ def CheckBTI(graph:Graph, errors:set = None):
                 #t and u are coinitial, so if they are not the same edge they must be indipendent
                 if edge1 != edge2 and not graph.AreIndipendent(edge1, edge2):
                     errors.add((edge1, edge2))
-    return len(errors)==0
+    return errors

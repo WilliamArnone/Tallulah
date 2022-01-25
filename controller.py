@@ -13,7 +13,7 @@ class Controller:
     path = None
     graph = None
 
-    def SetPath(self, path):
+    def Parse(self, path):
         """Set path oh the file to be read and parse the graph"""
         self.path = path
         graph, errors = parse(self.path)
@@ -30,24 +30,19 @@ class Controller:
         """Check graph properties and print error log"""
         errors = {}
         if properties['SP'].get():
-            errors['SP']=set()
-            CheckSP(self.graph, errors['SP'])
+            errors['SP']=CheckSP(self.graph, errors['SP'])
 
         if properties['BTI'].get():
-            errors['BTI']=set()
-            CheckBTI(self.graph, errors['BTI'])
+            errors['BTI']=CheckBTI(self.graph, errors['BTI'])
 
         if properties['WF'].get():
-            errors['WF']=set()
-            CheckWF(self.graph, errors['WF'])
+            errors['WF']=CheckWF(self.graph, errors['WF'])
 
         if properties['CPI'].get():
-            errors['CPI']=set()
-            CheckCPI(self.graph, errors['CPI'])
+            errors['CPI']=CheckCPI(self.graph, errors['CPI'])
         
         if properties['IRE'].get():
-            errors['IRE']=set()
-            CheckIRE(self.graph, errors['IRE'])
+            errors['IRE']=CheckIRE(self.graph, errors['IRE'])
 
         return self.ErrorsToString(errors), errors
                 
@@ -109,9 +104,9 @@ class Controller:
         
         return log
 
-    def ForceProperties(self, graph, errors):
-        """Check graph properties and return a new graph with the selected properties"""
-        new_graph = copy.deepcopy(graph)
+    def ForceProperties(self, errors):
+        """Check graph properties and return a new graph with the selected properties in DOT format"""
+        new_graph = copy.deepcopy(self.graph)
         if 'SP' in errors:
             for ind1, ind2, error in errors['SP']:
                 start, label, end, forward = error

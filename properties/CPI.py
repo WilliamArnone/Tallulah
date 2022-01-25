@@ -1,9 +1,9 @@
 from Graph import Graph, ReverseEdge
 
 #t: P-α->Q and u: P-β->R and u': Q-β->S and t': R-α->S with t ι u  => u' ι nt
-def CheckCPI(graph:Graph, errors:set = None):
+def CheckCPI(graph:Graph):
     """Check CPI property and return true if holds"""
-    if errors == None: errors = set()
+    errors = set()
 
     #if an error is found we save the edges to complete the diamond
     indipendence_to_add = []
@@ -48,4 +48,4 @@ def CheckCPI(graph:Graph, errors:set = None):
                                 errors.add((edge1, edge2, rev2, second))
                                 keep_search = True
                         
-    return len(errors)==0
+    return errors

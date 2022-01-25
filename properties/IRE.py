@@ -1,9 +1,9 @@
 from Graph import Graph
 
 #t ∼ t' ι u => t ι u
-def CheckIRE(graph:Graph, errors:set = None):
+def CheckIRE(graph:Graph):
     """Check IRE property and return true if holds"""
-    if errors == None: errors = set()
+    errors = set()
     #for each indipendent relation we want to check if also the edges of the same event are indipendent
     for indipendence in graph.indipendence:
         edge1, edge2 = indipendence
@@ -16,4 +16,4 @@ def CheckIRE(graph:Graph, errors:set = None):
         for edge in event:
             if not graph.AreIndipendent(edge, edge1):
                 errors.add((edge2, edge, edge1))
-    return len(errors)==0
+    return errors

@@ -46,8 +46,8 @@ class View:
             
             menu_bar = Menu(self.root)
             file_menu = Menu(menu_bar, tearoff=False)
-            file_menu.add_command(label="Open File",compound=LEFT, command= self.OpenFile)
-            menu_bar.add_cascade(label="Open",menu=file_menu)
+            file_menu.add_command(label="Open",compound=LEFT, command= self.OpenFile)
+            menu_bar.add_cascade(label="File",menu=file_menu)
             self.root.config(menu=menu_bar)
 
             # window settings
@@ -109,7 +109,7 @@ class View:
             btnCheck = Button(properties_frame, text="Check", command=lambda:self.CheckProperties(properties))
             btnCheck.pack()
         
-        errors = self.controller.SetPath(path)
+        errors = self.controller.Parse(path)
 
         if errors:
             messagebox.showerror("Error"," ".join(map(str, errors)))
@@ -150,10 +150,9 @@ class View:
     def CheckProperties(self, properties):
         """Check all properties and prints a log"""
         log, errors = self.controller.CheckProperties(properties)
-        new_graph = copy.deepcopy(self.controller.graph)
-        self.PopUpWindow(log, new_graph, errors)
+        self.PopUpWindow(log, errors)
 
-    def PopUpWindow(self, text, graph, errors):
+    def PopUpWindow(self, text, errors):
         """Create a new window with the log infos"""
         root = Tk()
         root.title("Log")
@@ -179,7 +178,7 @@ class View:
         btn = Button(frame, text="Save", command=lambda: self.SaveLog(text))
         btn.pack(pady=5)
 
-        btn = Button(frame, text="Apply", command=lambda: self.ForceProperties(graph, errors))
+        btn = Button(frame, text="Apply", command=lambda: self.ForceProperties(errors))
         btn.pack(pady=5)
 
         root.mainloop()
@@ -192,9 +191,9 @@ class View:
         dialog.write(text)
         dialog.close() 
 
-    def ForceProperties(self, graph, errors):
+    def ForceProperties(self, errors):
         """Check properties and save a DOT file with the changes"""
-        text2save = self.controller.ForceProperties(graph, errors)
+        text2save = self.controller.ForceProperties(errors)
         dialog = filedialog.asksaveasfile(mode='w', title="Save Graph", defaultextension=".dot", filetypes=(("DOT graph", "*.gv *.dot"), ("all files", "*.*")))
         if dialog is None: 
             return

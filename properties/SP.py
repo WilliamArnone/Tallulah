@@ -1,9 +1,9 @@
 from Graph import Graph
 
 #t: P-α->Q and u: P-β->R and t ι u  =>  exist u': Q-β->S and t': R-α->S
-def CheckSP(graph:Graph, errors:set = None):
+def CheckSP(graph:Graph):
     """Check SP property and return true if holds"""
-    if errors == None: errors = set()
+    errors = set()
 
     #start is the P of our definition
     for start in graph.nodes:
@@ -54,4 +54,4 @@ def CheckSP(graph:Graph, errors:set = None):
                             errors.add((edge1, edge2, error))
 
                         
-    return len(errors)==0
+    return errors
