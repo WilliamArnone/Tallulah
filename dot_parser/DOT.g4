@@ -11,13 +11,6 @@ stmt_list:  (stmt ';'? stmt_list)? ;
 
 indipendence_list: indipendence (';' | ',')? indipendence_list?;
 
-/* A statement could be:
-    - x1 [... some attributes ...]       // a node
-	- x1 -> x2                           // a simply edge (no label)
-    - x1 -> x2 [label="..."]             // a label edge
-
-   where x1 and x2 are IDs of nodes (a number or a couple of numbers).
-*/
 stmt : node_stmt | edge_stmt | attr_stmt | assignment | subgraph_stmt ;
 
 attr_stmt : ('graph' | 'node' | 'edge') attr_list ;

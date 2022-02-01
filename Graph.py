@@ -54,10 +54,10 @@ class Graph:
 
         for event in self.events:
             if edge in event:
-                if len(event==1): self.events.remove(event)
+                if len(event)==1: self.events.remove(event)
                 else: event.remove(edge)
             if ReverseEdge(edge) in event:
-                if len(event==1): self.events.remove(event)
+                if len(event)==1: self.events.remove(event)
                 else: event.remove(ReverseEdge(edge))
 
     def GetEdgesFrom(self, node, all=True, only_forward=True):

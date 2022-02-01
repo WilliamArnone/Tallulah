@@ -1,0 +1,9 @@
+digraph G{
+    A B C D E F G H
+    A -> {B C} [label=a]
+    B -> D -> F -> H [label=a]
+    C -> E -> G -> H [label=a]
+    F -> B -> E [label=a]
+    G -> C -> D [label=a]
+}
+/**/

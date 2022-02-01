@@ -65,7 +65,6 @@ class GraphBuilder(DOTListener):
     def enterEdgeRHS(self, ctx:DOTParser.EdgeRHSContext):
         self.nodes_order.append(set())
 
-
     def exitEdgeRHS(self, ctx:DOTParser.EdgeRHSContext):
         end_nodes = self.nodes_order.pop()
         start_nodes = self.nodes_order[-1]
@@ -81,10 +80,8 @@ class GraphBuilder(DOTListener):
     def enterIndipendence(self, ctx:DOTParser.IndipendenceContext):
         self.indipendence = []
 
-
     def exitIndipendence(self, ctx:DOTParser.IndipendenceContext):
         self.graph.AddIndipendence(self.indipendence[0],self.indipendence[1])
-
 
     def enterIndipendence_edge(self, ctx:DOTParser.Indipendence_edgeContext):
         start = ctx.children[1].getText().replace('"', '')

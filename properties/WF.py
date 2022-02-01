@@ -1,36 +1,89 @@
-from copy import deepcopy
-from Graph import Graph
+from copy import deepcopy, error
+from errno import EROFS
+import itertools
+from Graph import EdgeToString, Graph
 
 #No infinite reverse computation
 #we do not have Pi:= Pi+1-αi->Pi for all i = 0,1,...
-def CheckWF(graph:Graph, node = None, visited = None):
-    """Check WF property and return true if holds"""
-    #a dot file is finite, the only way to make infinite paths is to make a cycle
-    #initialize variables
-    is_first=False
-    to_be_visited = None
-    
-    errors = set()
-    if visited == None: visited = []
-    if node == None: 
-        is_first=True
-        to_be_visited = deepcopy(graph.nodes)
 
-    #found an already visited node
-    if node in visited: return False
+class WF:
 
-    while (not is_first) or len(to_be_visited)>0:
-        if is_first: node = to_be_visited.pop()
+    def Check(self, graph:Graph, getMinEdges=True):
+        """Check WF property and return true if holds"""
+        #a dot file is finite, the only way to make an infinite length paths is to make a cycle
+        
+        errors = set()
+        not_visited = deepcopy(graph.nodes)
+        path = []
 
-        visited.append(node)
+        #keep search until all node are visited
+        while len(not_visited)>0:
+            node = list(not_visited)[0]
+            
+            #call recursive bfs algorithm
+            sub_errors = self.__BFS(graph, node, path, not_visited)
+
+            #append to errors the cycle nodes
+            for index in range(len(sub_errors)): 
+                next = index+1 if index < len(sub_errors)-1 else -1
+                for error in graph.GetEdgesBetween(sub_errors[index], sub_errors[next], all=False): 
+                    errors.add(error)
+                    
+        return self.__MinEdge(graph, errors) if getMinEdges else errors
+
+    def __BFS(self, graph:Graph, node, path, not_visited):
+        """BFS algorithm in order to find cycles"""
+        errors = []
+        #if there is a cycle
+        if node in path:
+            start_cycle=False
+
+            #we return only the nodes of the cycle
+            for index in range(len(path)):
+                if path[index]: start_cycle=True
+                if start_cycle: errors.append(path[index])
+            return errors
+        
+        path.append(node)
+
+        #foreach adjacent node we apply the recursion
         for adj_node in graph.GetAdj(node):
-            if not CheckWF(graph, errors, adj_node, visited): 
-                for edge in graph.GetEdgesBetween(node, adj_node, all=False):
-                    errors.add(edge)
+            if(adj_node in not_visited):
+                sub_errors = self.__BFS(graph, adj_node, path, not_visited)
+                errors.extend(sub_errors)
 
-        visited.remove(node)
-        if not is_first: break
+        #this node is fully visited
+        not_visited.remove(node)
+        path.pop()
 
-    #we return true while visiting the graph because we want to find wich edge creates a cycle
-    #we don't want to stop at the first cycle found
-    return errors if len(visited)==0 else True
+        return errors
+
+    def __MinEdge(self, graph: Graph, edges):
+        """Checks WF with all the permutation of edges to find the minimum required"""
+        #we search the minimum number od edges needed to make the graph acyclic
+        for index in range(len(edges)-1):
+            permutations = itertools.permutations(edges, index+1)
+            for permutation in permutations:
+                test = deepcopy(graph)
+                #remove all the permutations from the graph
+                for edge in permutation:
+                    test.RemoveEdge(edge)
+                #if the graph is acyclic the permutation is the minimum required
+                if len(self.Check(test, False))==0:
+                    return list(permutation)
+
+    def Apply(self, graph: Graph, errors):
+        """Remove WF errors from the graph"""
+        for error in errors:
+            graph.RemoveEdge(error)
+
+    def ToString(self, errors):
+        """Returns the WF errors in a string"""
+        string = 'WF - Well-Foundedness:'+'\n'
+        if len(errors)==0:
+            string += 'WF holds'+'\n'
+        else:
+            for error in errors:
+                string += "- "+EdgeToString(error)+' creates a cycle'+'\n'
+        string+='\n'
+        return string
