@@ -2,7 +2,7 @@ from Graph import EdgeToString, Graph
 
 #t ∼ t' ι u => t ι u
 class IRE:
-    def Check(self, graph:Graph):
+    def Check(graph:Graph):
         """Check IRE property and return true if holds"""
         errors = set()
         #for each indipendent relation we want to check if also the edges of the same event are indipendent
@@ -19,16 +19,16 @@ class IRE:
                     errors.add((edge2, edge, edge1))
         return errors
 
-    def Apply(self, graph: Graph, errors):
+    def Apply(graph: Graph, errors):
         """Remove IRE errors from the graph"""
         for ev, edge1, edge2 in errors:
             graph.AddIndipendence(edge1, edge2)
 
-    def ToString(self, errors):
+    def ToString(errors):
         """Returns the IRE errors in a string"""
 
         string = 'IRE - Independence Respects Events:'+'\n'
-        if len(errors['IRE'])==0:
+        if len(errors)==0:
             string += 'IRE holds'+'\n'
         else:
             for ind, edge1, edge2 in errors:

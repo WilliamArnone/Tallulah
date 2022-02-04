@@ -2,7 +2,7 @@ from Graph import EdgeToString, Graph
 
 #t: P-α->Q and u: P-β->R and t ι u  =>  exist u': Q-β->S and t': R-α->S
 class SP:
-    def Check(self, graph:Graph):
+    def Check(graph:Graph):
         """Check SP property and return true if holds"""
         errors = set()
 
@@ -57,16 +57,16 @@ class SP:
                             
         return errors
     
-    def Apply(self, graph: Graph, errors):
+    def Apply(graph: Graph, errors):
         """Remove SP errors from the graph"""
         for ind1, ind2, error in errors:
             start, label, end, forward = error
             if(end != None): graph.AddEdge(error)
 
-    def ToString(self, errors):
+    def ToString(errors):
         """Returns the SP errors in a string"""
         string ='SP - Square Property:'+'\n'
-        if len(errors['SP'])==0:
+        if len(errors)==0:
             string += 'SP holds'+'\n'
         else:
             for ind1, ind2, error in errors:

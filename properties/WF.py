@@ -8,7 +8,7 @@ from Graph import EdgeToString, Graph
 
 class WF:
 
-    def Check(self, graph:Graph, getMinEdges=True):
+    def Check(graph:Graph, getMinEdges=True):
         """Check WF property and return true if holds"""
         #a dot file is finite, the only way to make an infinite length paths is to make a cycle
         
@@ -21,7 +21,7 @@ class WF:
             node = list(not_visited)[0]
             
             #call recursive bfs algorithm
-            sub_errors = self.__BFS(graph, node, path, not_visited)
+            sub_errors = WF.__BFS(graph, node, path, not_visited)
 
             #append to errors the cycle nodes
             for index in range(len(sub_errors)): 
@@ -29,9 +29,9 @@ class WF:
                 for error in graph.GetEdgesBetween(sub_errors[index], sub_errors[next], all=False): 
                     errors.add(error)
                     
-        return self.__MinEdge(graph, errors) if getMinEdges else errors
+        return WF.__MinEdge(graph, errors) if getMinEdges and len(errors)>0 else errors
 
-    def __BFS(self, graph:Graph, node, path, not_visited):
+    def __BFS(graph:Graph, node, path, not_visited):
         """BFS algorithm in order to find cycles"""
         errors = []
         #if there is a cycle
@@ -49,7 +49,7 @@ class WF:
         #foreach adjacent node we apply the recursion
         for adj_node in graph.GetAdj(node):
             if(adj_node in not_visited):
-                sub_errors = self.__BFS(graph, adj_node, path, not_visited)
+                sub_errors = WF.__BFS(graph, adj_node, path, not_visited)
                 errors.extend(sub_errors)
 
         #this node is fully visited
@@ -58,7 +58,7 @@ class WF:
 
         return errors
 
-    def __MinEdge(self, graph: Graph, edges):
+    def __MinEdge(graph: Graph, edges):
         """Checks WF with all the permutation of edges to find the minimum required"""
         #we search the minimum number od edges needed to make the graph acyclic
         for index in range(len(edges)-1):
@@ -69,15 +69,15 @@ class WF:
                 for edge in permutation:
                     test.RemoveEdge(edge)
                 #if the graph is acyclic the permutation is the minimum required
-                if len(self.Check(test, False))==0:
+                if len(WF.Check(test, False))==0:
                     return list(permutation)
 
-    def Apply(self, graph: Graph, errors):
+    def Apply(graph: Graph, errors):
         """Remove WF errors from the graph"""
         for error in errors:
             graph.RemoveEdge(error)
 
-    def ToString(self, errors):
+    def ToString(errors):
         """Returns the WF errors in a string"""
         string = 'WF - Well-Foundedness:'+'\n'
         if len(errors)==0:

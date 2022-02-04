@@ -1,0 +1,14 @@
+digraph G {
+	"G" -> "C" [label="a", color="#f58231"]
+	"G" -> "H" [label="a", color="#ffe119"]
+	"A" -> "C" [label="a", color="#bfef45"]
+	"A" -> "B" [label="a", color="#800000"]
+	"E" -> "G" [label="a", color="#aaffc3"]
+	"D" -> "F" [label="a", color="#42d4f4"]
+	"F" -> "H" [label="a", color="#000075"]
+	"C" -> "D" [label="a", color="#008080"]
+	"B" -> "E" [label="a", color="#808000"]
+	"B" -> "D" [label="a", color="#7698B3"]
+} 
+ /* 
+*/

@@ -2,7 +2,7 @@ from Graph import EdgeToString, Graph
 
 #t: P~α~>Q and t': P~β~>Q' and t=/=t'  =>  t ι t'
 class BTI:
-    def Check(self, graph:Graph):
+    def Check(graph:Graph):
         """Check BTI property and return true if holds"""
         errors = set()
 
@@ -19,17 +19,17 @@ class BTI:
                         errors.add((edge1, edge2))
         return errors
 
-    def Apply(self, graph: Graph, errors):
+    def Apply(graph: Graph, errors):
         """Remove BTI errors from the graph"""
         for error in errors:
             edge1, edge2 = error
             graph.AddIndipendence(edge1, edge2)
 
-    def ToString(self, errors):
+    def ToString(errors):
         """Returns the BTI errors in a string"""
 
         string = 'BTI - Backward Transitions are Indipendent:'+'\n'
-        if len(errors['BTI'])==0:
+        if len(errors)==0:
             string += 'BTI holds'+'\n'
         else:
             for edge1, edge2 in errors:

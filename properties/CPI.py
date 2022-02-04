@@ -2,7 +2,7 @@ from Graph import EdgeToString, Graph, ReverseEdge
 
 #t: P-α->Q and u: P-β->R and u': Q-β->S and t': R-α->S with t ι u  => u' ι nt
 class CPI:
-    def Check(self, graph:Graph):
+    def Check(graph:Graph):
         """Check CPI property and return true if holds"""
         errors = set()
 
@@ -51,13 +51,13 @@ class CPI:
                             
         return errors
     
-    def Apply(self, graph: Graph, errors):
+    def Apply(graph: Graph, errors):
         """Remove CPI errors from the graph"""
         for error in errors:
             edge1, edge2, rev, edge = error
             if rev != edge: graph.AddIndipendence(rev, edge)
 
-    def ToString(self, errors):
+    def ToString(errors):
         """Returns the CPI errors in a string"""
         string = 'CPI - Coinitial Propagation of Indipendence:'+'\n'
         if len(errors)==0:
