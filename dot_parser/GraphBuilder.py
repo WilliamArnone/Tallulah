@@ -21,7 +21,6 @@ class GraphBuilder(DOTListener):
         # we need to create an edge between that node and each node of the subgraph
         self.nodes_depth = []
         self.edges = []
-        self.labels = []
 
     def enterEdge_stmt(self, ctx:DOTParser.Edge_stmtContext):
         self.nodes_order.append(set())
@@ -30,7 +29,6 @@ class GraphBuilder(DOTListener):
 
     def exitEdge_stmt(self, ctx:DOTParser.Edge_stmtContext):
         # when an edge declaration ends we need to create an edge between every node to the next
-        label = self.labels.pop()
         self.nodes_order.pop()
         nodes = self.nodes_depth.pop()
         #if there are any subgraph they are store on the upper level
@@ -39,7 +37,7 @@ class GraphBuilder(DOTListener):
             
         for edge in self.edges.pop():
             lst = list(edge)
-            self.graph.AddEdge((lst[0], label, lst[1]))
+            self.graph.AddEdge((lst[0], self.label, lst[1]))
         
     def enterSubgraph_stmt(self, ctx:DOTParser.Subgraph_stmtContext):
         self.nodes_depth.append(set())
@@ -74,8 +72,7 @@ class GraphBuilder(DOTListener):
                 self.edges[-1].add((start, end))
 
     def enterA_label(self, ctx:DOTParser.A_labelContext):
-        self.labels.append(ctx.children[2].getText().replace('"', ''))
-
+        self.label=ctx.children[2].getText().replace('"', '')
 
     def enterIndipendence(self, ctx:DOTParser.IndipendenceContext):
         self.indipendence = []
