@@ -5,6 +5,8 @@ class IRE:
     def Check(graph:Graph):
         """Check IRE property and return true if holds"""
         errors = set()
+        graph.InitEvents()
+
         #for each indipendent relation we want to check if also the edges of the same event are indipendent
         for indipendence in graph.indipendence:
             edge1, edge2 = indipendence

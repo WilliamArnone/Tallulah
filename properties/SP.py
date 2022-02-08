@@ -8,7 +8,7 @@ class SP:
 
         #start is the P of our definition
         for start in graph.nodes:
-            edges = graph.GetEdgesFrom(start, all = False)
+            edges = graph.GetEdgesFrom(start)
 
             #edge1 is the t of our definition
             for edge1 in edges:
@@ -41,7 +41,7 @@ class SP:
                             elif secondExist and not firstExist:
                                 #if SP doesn't hold, it's because u' is missing
                                 temp.append(first)
-                            elif firstExist and not secondExist:
+                            elif firstExist:
                                 #if SP doesn't hold, it's because t' is missing
                                 temp.append(second)
 

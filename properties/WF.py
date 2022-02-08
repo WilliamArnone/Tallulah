@@ -61,8 +61,8 @@ class WF:
     def __MinEdge(graph: Graph, edges):
         """Checks WF with all the permutation of edges to find the minimum required"""
         #we search the minimum number od edges needed to make the graph acyclic
-        for index in range(len(edges)-1):
-            permutations = itertools.permutations(edges, index+1)
+        for i in range(len(edges)-2):
+            permutations = itertools.permutations(edges, i+1)
             for permutation in permutations:
                 test = deepcopy(graph)
                 #remove all the permutations from the graph

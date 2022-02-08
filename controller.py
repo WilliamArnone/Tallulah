@@ -1,5 +1,5 @@
 from PIL.Image import FASTOCTREE
-from graphviz import Source 
+from graphviz import Source, render
 import copy
 from Graph import EdgeToString
 from dot_parser.main import main as parse
@@ -22,9 +22,10 @@ class Controller:
 
     def GetGraphImage(self):
         """Save graph image and the return path to image"""
-        s = Source.from_file(self.path)
-        s.render(self.path, format='png',view=False)
-        return self.path+'.png'
+        #s = Source.from_file(self.path)
+        #s.render(self.path, format='png',view=False)
+        #return self.path+'.png'
+        return render('dot', 'png', self.path)
 
     def CheckProperties(self, properties):
         """Check graph properties and print error log"""

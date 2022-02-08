@@ -4,6 +4,22 @@ class Graph:
     #to save memory, edges are saved as an item in a list of labels, in a dictionary with keys (node1, node2)
     #functions return edges in the format (start, label, end, is_forward) 
     
+    colors_default = ['#bfef45',
+        '#800000',
+        '#000075',
+        '#42d4f4',
+        '#7698B3',
+        '#aaffc3',
+        '#ffe119',
+        '#808000',
+        '#008080',
+        '#f58231',
+        '#023C40',
+        '#dcbeff',
+        '#469990',
+        '#3cb44b',
+        '#481620',
+        '#DE3163']
     
     def __init__(self):
         #initialize all variables
@@ -22,8 +38,12 @@ class Graph:
         start = lst[0] 
         label = lst[1]
         end = lst[2]
+
+        #edge can be in the form (start, label, end) or (start, label, end, is_forward)
         is_forward = len(lst)==3 or lst[3]
         self.AddNode(start, end)
+        
+        #we save only the forward transitions
         if not is_forward: start, end = end, start
         if not (start, end) in self.edges: 
             self.edges[(start, end)] = []
@@ -43,22 +63,17 @@ class Graph:
         start = lst[0] 
         label = lst[1]
         end = lst[2]
+        
+        #edge can be in the form (start, label, end) or (start, label, end, is_forward)
         is_forward = len(lst)==3 or lst[3]
         if not is_forward: start, end = end, start
         if (start, end) in self.edges:
             self.edges[(start, end)].remove(label)
 
+        #we remove all the indipendences wich have the removed edge
         for edge1, edge2 in self.indipendence:
             if edge == edge2 or edge == edge1 or ReverseEdge(edge) == edge2 or ReverseEdge(edge) == edge1: 
                 self.indipendence.remove((edge1, edge2))
-
-        for event in self.events:
-            if edge in event:
-                if len(event)==1: self.events.remove(event)
-                else: event.remove(edge)
-            if ReverseEdge(edge) in event:
-                if len(event)==1: self.events.remove(event)
-                else: event.remove(ReverseEdge(edge))
 
     def GetEdgesFrom(self, node, all=True, only_forward=True):
         """Return forward, backward or both transitions from input node"""
@@ -116,6 +131,11 @@ class Graph:
 
     def InitEvents(self):
         """Initialize event classes"""
+        temp = []
+        for edge1, edge2 in self.indipendence: 
+            if not self.EdgeExists(edge1) or not self.EdgeExists(edge2) : temp.append((edge1, edge2))
+        for indipendence in temp: self.indipendence.remove(indipendence)
+
         for start in self.nodes:
             edges = self.GetEdgesFrom(start)
 
@@ -132,12 +152,12 @@ class Graph:
 
                         # searching for diamonds
                         if self.EdgeExists(first) and self.EdgeExists(second):
-                            cond = []
                             # we check if there is indipendence at each angle 
-                            cond.append((edge1, edge2))
-                            cond.append((ReverseEdge(edge1), first))
-                            cond.append((ReverseEdge(edge2), second))
-                            cond.append((ReverseEdge(first), ReverseEdge(second)))
+                            cond = {(edge1, edge2),
+                                (ReverseEdge(edge1), first),
+                                (ReverseEdge(edge2), second),
+                                (ReverseEdge(first), ReverseEdge(second))
+                            }
 
                             indipendent = True
                             for condition in cond:
@@ -148,7 +168,6 @@ class Graph:
                             if indipendent and ((is_forward1 == is_forward2 and end1 != end2) or (is_forward1 == is_forward2 and start != end)):
                                     self.AddToEvent(edge1, second)
                                     self.AddToEvent(edge2, first)
-
 
     def AddToEvent(self, edge1, edge2):
         """Union between events of two input transitions"""
@@ -183,22 +202,6 @@ class Graph:
         self.InitEvents()
         graph = 'digraph G {\n'
 
-        colors_default = ['#bfef45',
-            '#800000',
-            '#000075',
-            '#42d4f4',
-            '#7698B3',
-            '#aaffc3',
-            '#ffe119',
-            '#808000',
-            '#008080',
-            '#f58231',
-            '#023C40',
-            '#dcbeff',
-            '#469990',
-            '#3cb44b',
-            '#481620',
-            '#DE3163',]
         colors = []
         n_events = len(self.events)
 
@@ -206,8 +209,8 @@ class Graph:
         for i in range(n_events):
             colors.append('#%06X' % randint(0, 0xFFFFFF))
 
-        for i in range(min(len(colors), len(colors_default))):
-            colors[i]=colors_default[i]
+        for i in range(min(len(colors), len(self.colors_default))):
+            colors[i]=self.colors_default[i]
 
 
         #first 16 colors are not random
