@@ -59,20 +59,30 @@ class CPI:
 
     def ToString(errors):
         """Returns the CPI errors in a string"""
-        string = 'CPI - Coinitial Propagation of Indipendence:'+'\n'
+
+        log = [('CPI - Coinitial Propagation of Indipendence:'+'\n', "blue")]
         if len(errors)==0:
-            string += 'CPI holds'+'\n'
+            log.append(('CPI holds'+'\n', "green"))
         else:
-            missing_indipendence = ""
-            ltsi_error = "CLOSURE UNDER CPI CANNOT BE PERFORMED!"+'\n'
+            missing_indipendence = []
+            ltsi_error = [("CLOSURE UNDER CPI CANNOT BE PERFORMED!"+'\n', "red")]
             print_error = False
             for edge1, edge2, rev, edge in errors:
                 if rev == edge:
                     print_error = True
-                    ltsi_error = ltsi_error + "- The relation "+EdgeToString(edge1)+" ι "+EdgeToString(edge2)+" would imply "+EdgeToString(rev)+" ι "+EdgeToString(edge)+", but this is not possible since independence is irreflexive"+'\n'
+                    ltsi_error.append(("- The relation ", "black"))
+                    ltsi_error.append((EdgeToString(edge1)+" ι "+EdgeToString(edge2), "green"))
+                    ltsi_error.append((" would imply ", "black"))
+                    ltsi_error.append((EdgeToString(rev)+" ι "+EdgeToString(edge), "red"))
+                    ltsi_error.append((", but this is ", "black"))
+                    ltsi_error.append(("not possible", "red"))
+                    ltsi_error.append((" since independence is irreflexive"+'\n', "black"))
                 else:
-                    missing_indipendence = missing_indipendence + "- " + EdgeToString(edge1)+' ι '+EdgeToString(edge2)+' but not '+EdgeToString(rev)+" ι "+EdgeToString(edge)+'\n'
+                    missing_indipendence.append(("- ", "black")) 
+                    missing_indipendence.append((EdgeToString(edge1)+' ι '+EdgeToString(edge2), "green"))
+                    missing_indipendence.append((' but not ', "black"))
+                    missing_indipendence.append((EdgeToString(rev)+" ι "+EdgeToString(edge)+'\n', "red"))
             
-            string += (ltsi_error if print_error else missing_indipendence)+'\n'
-        string += '\n'
-        return string
+            log.extend(ltsi_error if print_error else missing_indipendence)
+        log.append(('\n', "black"))
+        return log

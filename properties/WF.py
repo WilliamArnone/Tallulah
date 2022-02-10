@@ -62,7 +62,7 @@ class WF:
         """Checks WF with all the permutation of edges to find the minimum required"""
         #we search the minimum number od edges needed to make the graph acyclic
         for i in range(len(edges)-2):
-            permutations = itertools.permutations(edges, i+1)
+            permutations = itertools.combinations(edges, i+1)
             for permutation in permutations:
                 test = deepcopy(graph)
                 #remove all the permutations from the graph
@@ -79,11 +79,13 @@ class WF:
 
     def ToString(errors):
         """Returns the WF errors in a string"""
-        string = 'WF - Well-Foundedness:'+'\n'
+        log = [('WF - Well-Foundedness:'+'\n', "blue")]
         if len(errors)==0:
-            string += 'WF holds'+'\n'
+            log.append(('WF holds'+'\n', "green"))
         else:
             for error in errors:
-                string += "- "+EdgeToString(error)+' creates a cycle'+'\n'
-        string+='\n'
-        return string
+                log.append(("- ", "black"))
+                log.append((EdgeToString(error), "red"))
+                log.append((' creates a cycle'+'\n', "black"))
+        log.append(('\n', "black"))
+        return log

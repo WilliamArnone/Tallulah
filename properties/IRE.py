@@ -29,12 +29,15 @@ class IRE:
     def ToString(errors):
         """Returns the IRE errors in a string"""
 
-        string = 'IRE - Independence Respects Events:'+'\n'
+        log = [('IRE - Independence Respects Events:'+'\n', "blue")]
         if len(errors)==0:
-            string += 'IRE holds'+'\n'
+            log.append(('IRE holds'+'\n', "green"))
         else:
             for ind, edge1, edge2 in errors:
-                string += "- "+EdgeToString(edge1)+" ~ "+EdgeToString(ind)+" ι "+EdgeToString(edge2)+" but "+EdgeToString(edge1)+' and '+EdgeToString(edge2)+' are not indipendent'+'\n'
+                log.append(("- ", "black"))
+                log.append((EdgeToString(edge1)+" ~ "+EdgeToString(ind)+" ι "+EdgeToString(edge2), "green"))
+                log.append((" but not ", "black"))
+                log.append((EdgeToString(edge1)+' ι '+EdgeToString(edge2)+'\n', "red"))
         
-        string += '\n'
-        return string
+        log.append(('\n', "black"))
+        return log

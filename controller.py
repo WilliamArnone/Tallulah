@@ -48,21 +48,22 @@ class Controller:
         return self.ErrorsToString(errors), errors
                 
     def ErrorsToString(self, errors):
-        log = ""
+        """Calls gets the messages of the errors"""
+        log = []
         if 'SP' in errors:
-            log += SP.ToString(errors['SP'])
+            log.extend(SP.ToString(errors['SP']))
 
         if 'BTI' in errors:
-            log += BTI.ToString(errors['BTI'])
+            log.extend(BTI.ToString(errors['BTI']))
 
         if 'WF' in errors:
-            log += WF.ToString(errors['WF'])
+            log.extend(WF.ToString(errors['WF']))
 
         if 'CPI' in errors:
-            log += CPI.ToString(errors['CPI'])
+            log.extend(CPI.ToString(errors['CPI']))
 
         if 'IRE' in errors:
-            log += IRE.ToString(errors['IRE'])
+            log.extend(IRE.ToString(errors['IRE']))
         
         return log
 
@@ -84,4 +85,4 @@ class Controller:
         if 'IRE' in errors:
             IRE.Apply(new_graph, errors['CPI'])
 
-        return new_graph.ToString()
+        return new_graph

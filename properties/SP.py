@@ -65,16 +65,20 @@ class SP:
 
     def ToString(errors):
         """Returns the SP errors in a string"""
-        string ='SP - Square Property:'+'\n'
+        log = [('SP - Square Property:'+'\n', "blue")]
         if len(errors)==0:
-            string += 'SP holds'+'\n'
+            log.append(('SP holds'+'\n', "green"))
         else:
             for ind1, ind2, error in errors:
                 start, label, end, is_forward = error
                 if end == None:
-                    string += '- ' + EdgeToString(ind1)+" ι "+EdgeToString(ind2)+" but they don't have any valid t' or u'"+'\n'
-                    #log = log + "- "+start+" should have a "+"forward" if is_forward else "backward" +" transiction labbeled "+label+" to a state"+'\n'
+                    log.append(('- ', "black"))
+                    log.append((EdgeToString(ind1)+" ι "+EdgeToString(ind2), "red"))
+                    log.append((" but they don't have any valid t' or u'"+'\n', "black"))
                 else:
-                    string += '- ' + EdgeToString(ind1)+" ι "+EdgeToString(ind2)+ ' but they don\'t have a common end, could be added '+EdgeToString(error)+'\n'
-        string+='\n'
-        return string
+                    log.append(('- ', "black"))
+                    log.append((EdgeToString(ind1)+" ι "+EdgeToString(ind2), "red"))
+                    log.append((' but they don\'t have a common end, could be added ', "black"))
+                    log.append((EdgeToString(error)+'\n', "green"))
+        log.append(('\n', "black"))
+        return log

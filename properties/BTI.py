@@ -28,11 +28,16 @@ class BTI:
     def ToString(errors):
         """Returns the BTI errors in a string"""
 
-        string = 'BTI - Backward Transitions are Indipendent:'+'\n'
+        log = [('BTI - Backward Transitions are Indipendent:'+'\n', "blue")]
         if len(errors)==0:
-            string += 'BTI holds'+'\n'
+            log.append(('BTI holds'+'\n', "green"))
         else:
             for edge1, edge2 in errors:
-                string += "- "+EdgeToString(edge1)+' and '+EdgeToString(edge2)+' are not indipendent'+'\n'
-        string+='\n'
-        return string
+                log.append(("- ", "black"))
+                log.append((EdgeToString(edge1), "red"))
+                log.append((' and ', "black"))
+                log.append((EdgeToString(edge2), "red"))
+                log.append((' are ', "black"))
+                log.append(('not indipendent'+'\n', "red"))
+        log.append(('\n', "black"))
+        return log
