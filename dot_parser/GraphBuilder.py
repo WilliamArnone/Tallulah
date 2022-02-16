@@ -56,7 +56,7 @@ class GraphBuilder(DOTListener):
 
     def enterNode_id(self, ctx:DOTParser.Node_idContext):
         if(self.nodes_depth and self.nodes_order):
-            node = ctx.getText().replace('"','')
+            node = StringContent(ctx.getText())
             self.nodes_order[-1].add(node)
             self.nodes_depth[-1].add(node)
 
@@ -72,7 +72,7 @@ class GraphBuilder(DOTListener):
                 self.edges[-1].add((start, end))
 
     def enterA_label(self, ctx:DOTParser.A_labelContext):
-        self.label=ctx.children[2].getText().replace('"', '')
+        self.label=StringContent(ctx.children[2].getText())
 
     def enterIndipendence(self, ctx:DOTParser.IndipendenceContext):
         self.indipendence = []
@@ -81,8 +81,11 @@ class GraphBuilder(DOTListener):
         self.graph.AddIndipendence(self.indipendence[0],self.indipendence[1])
 
     def enterIndipendence_edge(self, ctx:DOTParser.Indipendence_edgeContext):
-        start = ctx.children[1].getText().replace('"', '')
-        label = ctx.children[3].getText().replace('"', '')
-        end = ctx.children[5].getText().replace('"', '')
+        start = StringContent(ctx.children[1].getText())
+        label = StringContent(ctx.children[3].getText())
+        end = StringContent(ctx.children[5].getText())
         is_forward = ctx.children[0].getText()=='>'
         self.indipendence.append((start, label, end, is_forward))
+
+def StringContent(string):
+    return string[1:-1] if string[0]=='"' and string[-1]=='"' else string

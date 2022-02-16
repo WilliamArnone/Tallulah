@@ -231,8 +231,8 @@ class Graph:
         graph = graph + "} \n /* \n"
         
         for (start1, label1, end1, is_forward1), (start2, label2, end2, is_forward2) in self.indipendence:
-            graph = graph + '\t' + ('> ' if is_forward1 else '< ') + start1 + ' -' + label1 + '-> '+ end1 +' / '
-            graph = graph + ('> ' if is_forward2 else '< ') + start2 + ' -' + label2 + '-> '+ end2 +'\n'
+            graph = graph + '\t' + ('> ' if is_forward1 else '< ') + '"' + start1 + '" -"' + label1 + '"-> "'+ end1 +'" / '
+            graph = graph + ('> ' if is_forward2 else '< ') + '"' + start2 + '" -"' + label2 + '"-> "'+ end2 +'"\n'
 
         graph = graph + '*/'
         return graph
