@@ -41,12 +41,12 @@ class IRE:
             graph.AddIndipendence(edge1, edge2)
 
     def IsApplyable(error):
-        """Returns True if the error can be fixed"""
+        """Return True if the error can be fixed"""
         ev, edge1, edge2 = error
         return edge1!=edge2
 
     def GetLog(error):
-        """Returns the BTI errors in a (text, color) list"""
+        """Return the BTI errors in a (text, color) list"""
         ind, edge1, edge2 = error
         log = []
         log.append((EdgeToString(edge1)+" ~ "+EdgeToString(ind)+" ι "+EdgeToString(edge2), "green"))

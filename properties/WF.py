@@ -39,11 +39,12 @@ class WF:
         #if there is a cycle
         if node in path:
             start_cycle=False
-
+            errors.append(node)
             #we return only the nodes of the cycle
             for index in range(len(path)):
-                if path[index]: start_cycle=True
+                if path[index]==node: start_cycle=True
                 if start_cycle: errors.append(path[index])
+            errors.append(node)
             return errors
         
         path.append(node)

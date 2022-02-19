@@ -71,11 +71,11 @@ class SP:
         graph.AddEdge(edge)
 
     def IsApplyable(error):
-        """Returns True if the error can be fixed"""
+        """Return True if the error can be fixed"""
         return True
 
     def GetLog(error):
-        """Returns the BTI errors in a (text, color) list"""
+        """Return the BTI errors in a (text, color) list"""
         ind1, ind2, edge, is_new_end = error
         log = []
         start, label, end, is_forward = edge

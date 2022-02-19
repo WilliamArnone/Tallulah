@@ -70,12 +70,12 @@ class CPI:
         if rev != edge: graph.AddIndipendence(rev, edge)
 
     def IsApplyable(error):
-        """Returns True if the error can be fixed"""
+        """Return True if the error can be fixed"""
         edge1, edge2, rev, edge = error
         return rev != edge
 
     def GetLog(error):
-        """Returns the BTI errors in a (text, color) list"""
+        """Return the BTI errors in a (text, color) list"""
         log = []
         edge1, edge2, rev, edge = error
         if rev == edge:

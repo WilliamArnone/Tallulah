@@ -49,22 +49,28 @@ class Controller:
         return new_graph
 
     def GetPropertyName(self, property_id):
+        """Return the complete property name given its id"""
         return self.GetPropertyByID(property_id).name
 
     def CheckProperty(self, property_id):
+        """Check the property and returns the errors if any"""
         return self.GetPropertyByID(property_id).Check(self.graph)
 
     def GetLog(self, property_id, error):
+        """Return the error in a list of (text, color)"""
         return self.GetPropertyByID(property_id).GetLog(error)
 
     def IsErrorApplyable(self, property_id, error):
+        """Return True if the error can be removed"""
         return self.GetPropertyByID(property_id).IsApplyable(error)
 
     def ForceProperty(self, graph, property_id, error):
+        """Remove the error from the graph"""
         if self.IsErrorApplyable(property_id, error):
             self.GetPropertyByID(property_id).Apply(graph, error)
 
     def GetPropertyByID(self, property_id):
+        """Return the the property given its id"""
         if property_id=="SP": return SP
         elif property_id=="WF": return WF
         elif property_id=="BTI": return BTI
