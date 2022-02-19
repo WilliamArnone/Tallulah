@@ -64,19 +64,19 @@ class View:
             properties_frame = LabelFrame(self.root, text = "Properties", padx=3, pady=3)
             properties_frame.grid(row=0, column=1, sticky=W+E+S+N)
         
-            indipendence_frame = Frame(self.root, bg="gray")
-            indipendence_frame.grid(row=1, column=1, sticky=W+E+S+N)
+            independence_frame = Frame(self.root, bg="gray")
+            independence_frame.grid(row=1, column=1, sticky=W+E+S+N)
 
-            indipendence_title = Label(indipendence_frame, text="INDIPENDENCE:")
-            indipendence_title.pack(fill="x")
+            independence_title = Label(independence_frame, text="independence:")
+            independence_title.pack(fill="x")
 
-            self.indipendence_text = Text(indipendence_frame, width=40)
-            self.indipendence_text.pack(side=LEFT, fill="both", expand=True)
+            self.independence_text = Text(independence_frame, width=40)
+            self.independence_text.pack(side=LEFT, fill="both", expand=True)
 
-            scrollbar = Scrollbar(indipendence_frame, command=self.indipendence_text.yview)
+            scrollbar = Scrollbar(independence_frame, command=self.independence_text.yview)
             scrollbar.pack(side=RIGHT, fill='y')
             
-            self.indipendence_text['yscrollcommand'] = scrollbar.set
+            self.independence_text['yscrollcommand'] = scrollbar.set
             
             # initialize checkboxes
             properties = {}
@@ -118,13 +118,12 @@ class View:
         lblImage.grid(row=0, column=0, rowspan=2, sticky=W+E+S+N)
         self.widgets.append(lblImage)
 
-        #clears the indipendence string
-        self.indipendence_text.configure(state='normal')
-        self.indipendence_text.delete('1.0', END)
-        self.indipendence_text.insert('end', self.controller.graph.GetIndipendenceString())
-        self.indipendence_text.configure(state='disabled')
-
-        
+        #clears the independence string
+        self.independence_text.configure(state='normal')
+        self.independence_text.delete('1.0', END)
+        self.independence_text.insert('end', self.controller.graph.GetIndependenceString())
+        self.independence_text.configure(state='disabled')
+      
     def ClearScreen(self):
         """Destroy the start ui, or the image of the main ui"""
         for widget in self.widgets:
@@ -141,8 +140,8 @@ class View:
         self.MainUI(path)
 
     def CheckProperties(self, properties):
-        """Check all properties and prints a log"""
-        errors = self.controller.CheckProperties(properties)
+        """Check all properties and creates a new window with all the infos"""
+        graph, errors = self.controller.CheckProperties(properties)
         popUp = Toplevel(self.root)
         popUp.geometry("800x500")
         popUp.title("Log")
@@ -158,15 +157,11 @@ class View:
 
         canvas.configure(yscrollcommand = scrollbar.set)
 
-        # update scrollregion after starting 'mainloop'
-        # when all widgets are in canvas
         canvas.bind('<Configure>', lambda event: canvas.configure(scrollregion=canvas.bbox('all')))
-
-        # --- put frame in canvas ---
 
         frame = Frame(canvas)
         canvas.create_window((0,0), window=frame, anchor='nw')
-        canvas.bind("<MouseWheel>", lambda event: canvas.yview_scroll(int(-1*(event.delta/120)), "units"))
+        popUp.bind("<MouseWheel>", lambda event: canvas.yview_scroll(int(-1*(event.delta/120)), "units"))
 
         color = {}
         color["black"] = "#000000"
@@ -223,7 +218,7 @@ class View:
         btn = Button(popUp, text="Save", command=lambda: self.SaveLog(errors))
         btn.pack(side=LEFT, fill="x", expand=True)
 
-        btn = Button(popUp, text="Apply Selected", command=lambda: self.ForceProperties(errors, check_values))
+        btn = Button(popUp, text="Apply Selected", command=lambda: self.ForceProperties(graph, errors, check_values))
         btn.pack(side=RIGHT, fill="x", expand=True)
         
     def SaveLog(self, errors):
@@ -246,10 +241,10 @@ class View:
             f.write(text2save)
             f.close() 
 
-    def ForceProperties(self, errors, check):
+    def ForceProperties(self, graph, errors, check):
         """Check properties and save a DOT file with the changes"""
-        graph = self.controller.ForceProperties(errors, check)
-        text2save = graph.ToString()
+        graph2save = self.controller.ForceProperties(graph, errors, check)
+        text2save = graph2save.ToString()
         dialog = filedialog.asksaveasfile(mode='w', title="Save Graph", defaultextension=".dot", filetypes=(("DOT graph", "*.gv *.dot"), ("all files", "*.*")))
         if dialog is None: 
             return

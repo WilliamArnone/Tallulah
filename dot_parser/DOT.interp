@@ -61,7 +61,7 @@ LINE_COMMENT
 rule names:
 graph
 stmt_list
-indipendence_list
+independence_list
 stmt
 attr_stmt
 attr_list
@@ -75,8 +75,8 @@ node_id
 port
 subgraph_stmt
 assignment
-indipendence
-indipendence_edge
+independence
+independence_edge
 identifier
 
 

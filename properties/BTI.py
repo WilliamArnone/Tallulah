@@ -26,7 +26,7 @@ class BTI:
     def Apply(graph: Graph, error):
         """Remove BTI errors from the graph"""
         edge1, edge2 = error
-        graph.AddIndipendence(edge1, edge2)
+        graph.AddIndependence(edge1, edge2)
 
     def IsApplyable(error):
         """Returns True if the error can be fixed"""

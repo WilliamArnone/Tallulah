@@ -11,8 +11,8 @@ class IRE:
         graph.InitEvents()
 
         #for each independent relation we want to check if also the edges of the same event are independent
-        for indipendence in graph.indipendence:
-            edge1, edge2 = indipendence
+        for independence in graph.independence:
+            edge1, edge2 = independence
             event = graph.GetEventClass(edge1)
             for edge in event:
                 if not graph.AreIndependent(edge, edge2):
@@ -38,7 +38,7 @@ class IRE:
         """Remove IRE errors from the graph"""
         ev, edge1, edge2 = error
         if edge1 != edge2:
-            graph.AddIndipendence(edge1, edge2)
+            graph.AddIndependence(edge1, edge2)
 
     def IsApplyable(error):
         """Return True if the error can be fixed"""

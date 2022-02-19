@@ -74,18 +74,18 @@ class GraphBuilder(DOTListener):
     def enterA_label(self, ctx:DOTParser.A_labelContext):
         self.label=StringContent(ctx.children[2].getText())
 
-    def enterIndipendence(self, ctx:DOTParser.IndipendenceContext):
-        self.indipendence = []
+    def enterIndependence(self, ctx:DOTParser.IndependenceContext):
+        self.independence = []
 
-    def exitIndipendence(self, ctx:DOTParser.IndipendenceContext):
-        self.graph.AddIndipendence(self.indipendence[0],self.indipendence[1])
+    def exitIndependence(self, ctx:DOTParser.IndependenceContext):
+        self.graph.AddIndependence(self.independence[0],self.independence[1])
 
-    def enterIndipendence_edge(self, ctx:DOTParser.Indipendence_edgeContext):
+    def enterIndependence_edge(self, ctx:DOTParser.Independence_edgeContext):
         start = StringContent(ctx.children[1].getText())
         label = StringContent(ctx.children[3].getText())
         end = StringContent(ctx.children[5].getText())
         is_forward = ctx.children[0].getText()=='>'
-        self.indipendence.append((start, label, end, is_forward))
+        self.independence.append((start, label, end, is_forward))
 
 def StringContent(string):
     return string[1:-1] if string[0]=='"' and string[-1]=='"' else string

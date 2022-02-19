@@ -100,7 +100,7 @@ class DOTParser ( Parser ):
 
     RULE_graph = 0
     RULE_stmt_list = 1
-    RULE_indipendence_list = 2
+    RULE_independence_list = 2
     RULE_stmt = 3
     RULE_attr_stmt = 4
     RULE_attr_list = 5
@@ -114,14 +114,14 @@ class DOTParser ( Parser ):
     RULE_port = 13
     RULE_subgraph_stmt = 14
     RULE_assignment = 15
-    RULE_indipendence = 16
-    RULE_indipendence_edge = 17
+    RULE_independence = 16
+    RULE_independence_edge = 17
     RULE_identifier = 18
 
-    ruleNames =  [ "graph", "stmt_list", "indipendence_list", "stmt", "attr_stmt", 
+    ruleNames =  [ "graph", "stmt_list", "independence_list", "stmt", "attr_stmt", 
                    "attr_list", "attr_label", "a_list", "a_label", "edge_stmt", 
                    "edgeRHS", "node_stmt", "node_id", "port", "subgraph_stmt", 
-                   "assignment", "indipendence", "indipendence_edge", "identifier" ]
+                   "assignment", "independence", "independence_edge", "identifier" ]
 
     EOF = Token.EOF
     T__0=1
@@ -176,8 +176,8 @@ class DOTParser ( Parser ):
             return self.getTypedRuleContext(DOTParser.Stmt_listContext,0)
 
 
-        def indipendence_list(self):
-            return self.getTypedRuleContext(DOTParser.Indipendence_listContext,0)
+        def independence_list(self):
+            return self.getTypedRuleContext(DOTParser.Independence_listContext,0)
 
 
         def getRuleIndex(self):
@@ -230,7 +230,7 @@ class DOTParser ( Parser ):
                 _la = self._input.LA(1)
                 if _la==DOTParser.Direction:
                     self.state = 47
-                    self.indipendence_list()
+                    self.independence_list()
 
 
                 self.state = 50
@@ -309,44 +309,44 @@ class DOTParser ( Parser ):
         return localctx
 
 
-    class Indipendence_listContext(ParserRuleContext):
+    class Independence_listContext(ParserRuleContext):
         __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def indipendence(self):
-            return self.getTypedRuleContext(DOTParser.IndipendenceContext,0)
+        def independence(self):
+            return self.getTypedRuleContext(DOTParser.IndependenceContext,0)
 
 
-        def indipendence_list(self):
-            return self.getTypedRuleContext(DOTParser.Indipendence_listContext,0)
+        def independence_list(self):
+            return self.getTypedRuleContext(DOTParser.Independence_listContext,0)
 
 
         def getRuleIndex(self):
-            return DOTParser.RULE_indipendence_list
+            return DOTParser.RULE_independence_list
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterIndipendence_list" ):
-                listener.enterIndipendence_list(self)
+            if hasattr( listener, "enterIndependence_list" ):
+                listener.enterIndependence_list(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitIndipendence_list" ):
-                listener.exitIndipendence_list(self)
+            if hasattr( listener, "exitIndependence_list" ):
+                listener.exitIndependence_list(self)
 
 
 
 
-    def indipendence_list(self):
+    def independence_list(self):
 
-        localctx = DOTParser.Indipendence_listContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 4, self.RULE_indipendence_list)
+        localctx = DOTParser.Independence_listContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 4, self.RULE_independence_list)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 61
-            self.indipendence()
+            self.independence()
             self.state = 63
             self._errHandler.sync(self)
             _la = self._input.LA(1)
@@ -365,7 +365,7 @@ class DOTParser ( Parser ):
             _la = self._input.LA(1)
             if _la==DOTParser.Direction:
                 self.state = 65
-                self.indipendence_list()
+                self.independence_list()
 
 
         except RecognitionException as re:
@@ -1212,46 +1212,46 @@ class DOTParser ( Parser ):
         return localctx
 
 
-    class IndipendenceContext(ParserRuleContext):
+    class IndependenceContext(ParserRuleContext):
         __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def indipendence_edge(self, i:int=None):
+        def independence_edge(self, i:int=None):
             if i is None:
-                return self.getTypedRuleContexts(DOTParser.Indipendence_edgeContext)
+                return self.getTypedRuleContexts(DOTParser.Independence_edgeContext)
             else:
-                return self.getTypedRuleContext(DOTParser.Indipendence_edgeContext,i)
+                return self.getTypedRuleContext(DOTParser.Independence_edgeContext,i)
 
 
         def getRuleIndex(self):
-            return DOTParser.RULE_indipendence
+            return DOTParser.RULE_independence
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterIndipendence" ):
-                listener.enterIndipendence(self)
+            if hasattr( listener, "enterIndependence" ):
+                listener.enterIndependence(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitIndipendence" ):
-                listener.exitIndipendence(self)
+            if hasattr( listener, "exitIndependence" ):
+                listener.exitIndependence(self)
 
 
 
 
-    def indipendence(self):
+    def independence(self):
 
-        localctx = DOTParser.IndipendenceContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 32, self.RULE_indipendence)
+        localctx = DOTParser.IndependenceContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 32, self.RULE_independence)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 151
-            self.indipendence_edge()
+            self.independence_edge()
             self.state = 152
             self.match(DOTParser.T__19)
             self.state = 153
-            self.indipendence_edge()
+            self.independence_edge()
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -1261,7 +1261,7 @@ class DOTParser ( Parser ):
         return localctx
 
 
-    class Indipendence_edgeContext(ParserRuleContext):
+    class Independence_edgeContext(ParserRuleContext):
         __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
@@ -1279,23 +1279,23 @@ class DOTParser ( Parser ):
 
 
         def getRuleIndex(self):
-            return DOTParser.RULE_indipendence_edge
+            return DOTParser.RULE_independence_edge
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterIndipendence_edge" ):
-                listener.enterIndipendence_edge(self)
+            if hasattr( listener, "enterIndependence_edge" ):
+                listener.enterIndependence_edge(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitIndipendence_edge" ):
-                listener.exitIndipendence_edge(self)
+            if hasattr( listener, "exitIndependence_edge" ):
+                listener.exitIndependence_edge(self)
 
 
 
 
-    def indipendence_edge(self):
+    def independence_edge(self):
 
-        localctx = DOTParser.Indipendence_edgeContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 34, self.RULE_indipendence_edge)
+        localctx = DOTParser.Independence_edgeContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 34, self.RULE_independence_edge)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 155

@@ -1,40 +1,40 @@
 digraph G {
-	"AC" -> "ABC" [label="b", color="#800000"]
-	"BC" -> "ABC" [label="a", color="#bfef45"]
-	"start" -> "B" [label="b", color="#800000"]
-	"start" -> "C" [label="c", color="#000075"]
-	"start" -> "A" [label="a", color="#bfef45"]
-	"AB" -> "ABC" [label="c", color="#000075"]
-	"B" -> "BC" [label="c", color="#000075"]
-	"B" -> "AB" [label="a", color="#bfef45"]
-	"C" -> "AC" [label="a", color="#bfef45"]
-	"C" -> "BC" [label="b", color="#800000"]
-	"A" -> "AC" [label="c", color="#000075"]
-	"A" -> "AB" [label="b", color="#800000"]
+	"A" -> "AB" [label="b", color="#000075"]
+	"A" -> "AC" [label="c", color="#bfef45"]
+	"B" -> "BC" [label="c", color="#bfef45"]
+	"B" -> "AB" [label="a", color="#800000"]
+	"BC" -> "ABC" [label="a", color="#800000"]
+	"AB" -> "ABC" [label="c", color="#bfef45"]
+	"AC" -> "ABC" [label="b", color="#000075"]
+	"start" -> "A" [label="a", color="#800000"]
+	"start" -> "B" [label="b", color="#000075"]
+	"start" -> "C" [label="c", color="#bfef45"]
+	"C" -> "BC" [label="b", color="#000075"]
+	"C" -> "AC" [label="a", color="#800000"]
 } 
  /* 
-	> C -b-> BC / < C -c-> start
-	< AB -a-> B / < AB -b-> A
-	< BC -c-> B / < BC -b-> C
-	> BC -a-> ABC / < BC -b-> C
-	> AC -b-> ABC / < AC -a-> C
-	> A -c-> AC / < A -a-> start
-	> A -b-> AB / < A -a-> start
-	> start -c-> C / > start -b-> B
-	> C -a-> AC / > C -b-> BC
-	> B -a-> AB / > B -c-> BC
-	> start -a-> A / > start -c-> C
-	> B -c-> BC / < B -b-> start
-	> AB -c-> ABC / < AB -b-> A
-	> AB -c-> ABC / < AB -a-> B
-	> BC -a-> ABC / < BC -c-> B
-	< AC -a-> C / < AC -c-> A
-	> start -a-> A / > start -b-> B
-	< ABC -b-> AC / < ABC -c-> AB
-	< ABC -a-> BC / < ABC -c-> AB
-	> A -c-> AC / > A -b-> AB
-	> B -a-> AB / < B -b-> start
-	> C -a-> AC / < C -c-> start
-	> AC -b-> ABC / < AC -c-> A
-	< ABC -a-> BC / < ABC -b-> AC
+	> "AB" -"c"-> "ABC" / < "AB" -"a"-> "B"
+	> "C" -"b"-> "BC" / < "C" -"c"-> "start"
+	> "B" -"a"-> "AB" / < "B" -"b"-> "start"
+	> "start" -"c"-> "C" / > "start" -"b"-> "B"
+	> "AB" -"c"-> "ABC" / < "AB" -"b"-> "A"
+	< "ABC" -"b"-> "AC" / < "ABC" -"a"-> "BC"
+	< "AC" -"a"-> "C" / < "AC" -"c"-> "A"
+	> "B" -"c"-> "BC" / < "B" -"b"-> "start"
+	< "ABC" -"a"-> "BC" / < "ABC" -"c"-> "AB"
+	> "AC" -"b"-> "ABC" / < "AC" -"c"-> "A"
+	> "BC" -"a"-> "ABC" / < "BC" -"c"-> "B"
+	> "C" -"a"-> "AC" / < "C" -"c"-> "start"
+	> "BC" -"a"-> "ABC" / < "BC" -"b"-> "C"
+	< "BC" -"c"-> "B" / < "BC" -"b"-> "C"
+	> "A" -"b"-> "AB" / < "A" -"a"-> "start"
+	> "start" -"c"-> "C" / > "start" -"a"-> "A"
+	< "ABC" -"c"-> "AB" / < "ABC" -"b"-> "AC"
+	> "start" -"b"-> "B" / > "start" -"a"-> "A"
+	> "AC" -"b"-> "ABC" / < "AC" -"a"-> "C"
+	> "A" -"b"-> "AB" / > "A" -"c"-> "AC"
+	> "A" -"c"-> "AC" / < "A" -"a"-> "start"
+	> "B" -"c"-> "BC" / > "B" -"a"-> "AB"
+	> "C" -"b"-> "BC" / > "C" -"a"-> "AC"
+	< "AB" -"a"-> "B" / < "AB" -"b"-> "A"
 */

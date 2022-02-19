@@ -22,6 +22,7 @@ class Controller:
 
     def GetGraphImage(self):
         """Save graph image and the return path to image"""
+        #this code isn't compatible with previous versions of graphviz
         #s = Source.from_file(self.path)
         #s.render(self.path, format='png',view=False)
         #return self.path+'.png'
@@ -35,11 +36,11 @@ class Controller:
             if properties[property_id].get():
                 errors[property_id] = self.CheckProperty(property_id)
 
-        return errors
+        return self.graph, errors
 
-    def ForceProperties(self, errors, check):
+    def ForceProperties(self, graph, errors, check):
         """Check graph properties and return a new graph with the selected properties in DOT format"""
-        new_graph = copy.deepcopy(self.graph)
+        new_graph = copy.deepcopy(graph)
         
         for property_id in errors:
             for i in range(len(errors[property_id])): 

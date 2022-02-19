@@ -33,7 +33,7 @@ satisfies CC => satisfies UT
 CPI - Coinitial Propagation of Independence*
 t: P-α->Q and u: P-β->R and u': Q-β->S and t': R-α->S with t ι u  => u' ι nt
 
-ID - Indipendence of Diamonds
+ID - independence of Diamonds
 t: P-α->Q and u: P-β->R and u': Q-β->S and t': R-α->S with 
 Q=/=R if α and β both forwards/backwards
 P=/=S otherwise
@@ -48,15 +48,15 @@ CL - Casual Liveness via Independe of Transitions
 P-α->Q, r: Q-β->*R, #(r,[P,α,Q])=0, (P, a, Q) ι t for all t in r t.c. #(r, [t]) > 0
 => S-α->R, (P, a, Q) ∼ (S, a, R)
 
-IRE - Indipendence Respects Event
+IRE - independence Respects Event
 t ∼ t' ι u => t ι u
 IRE => CS and CL
 
-IEC - Indipendence of Event is Coinitial
+IEC - independence of Event is Coinitial
 t1 ι t2  
 =>  exist t'1 ∼ t1, t'2 ∼ t2 t.c. t'1 and t'2 are coinitial and t'1 ι t'2
 
-RPI - Reversing Preserves Indipendence
+RPI - Reversing Preserves independence
 t ι t' => nt ι t'
 satisfies SP, CPI, IRE, IEC => RPI
 

@@ -4,12 +4,12 @@
 */
 grammar DOT;
 
-graph   :  'strict'? 'digraph' identifier '{' stmt_list '}' ('/*' indipendence_list? '*/')?;
+graph   :  'strict'? 'digraph' identifier '{' stmt_list '}' ('/*' independence_list? '*/')?;
 
 
 stmt_list:  (stmt ';'? stmt_list)? ;
 
-indipendence_list: indipendence (';' | ',')? indipendence_list?;
+independence_list: independence (';' | ',')? independence_list?;
 
 stmt : node_stmt | edge_stmt | attr_stmt | assignment | subgraph_stmt ;
 
@@ -37,9 +37,9 @@ subgraph_stmt : ('subgraph' identifier?)? '{'stmt_list'}';
 
 assignment : identifier '=' identifier;
 
-indipendence: indipendence_edge'/'indipendence_edge;
+independence: independence_edge'/'independence_edge;
 
-indipendence_edge: Direction identifier '-' identifier '->' identifier ;
+independence_edge: Direction identifier '-' identifier '->' identifier ;
 
 identifier : Variable | Quote | Number ;
 

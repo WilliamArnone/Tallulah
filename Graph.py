@@ -26,7 +26,7 @@ class Graph:
         self.edges = {}
         self.events = []
         self.nodes = set()
-        self.indipendence = set()
+        self.independence = set()
 
     def AddNode(self, *nodes):
         """Add node to the set of nodes"""
@@ -70,10 +70,10 @@ class Graph:
         if (start, end) in self.edges:
             self.edges[(start, end)].remove(label)
 
-        #we remove all the indipendences wich have the removed edge
-        for edge1, edge2 in self.indipendence:
+        #we remove all the independences wich have the removed edge
+        for edge1, edge2 in self.independence:
             if edge == edge2 or edge == edge1 or ReverseEdge(edge) == edge2 or ReverseEdge(edge) == edge1: 
-                self.indipendence.remove((edge1, edge2))
+                self.independence.remove((edge1, edge2))
 
     def GetEdgesFrom(self, node, all=True, only_forward=True):
         """Return forward, backward or both transitions from input node"""
@@ -117,24 +117,27 @@ class Graph:
 
         return nodes
 
-    def AddIndipendence(self, edge1, edge2):
-        """Add indipendence between two input nodes"""
-        if not (edge2, edge1) in self.indipendence:
-            if edge1!=edge2: self.indipendence.add((edge1, edge2))
+    def AddIndependence(self, edge1, edge2):
+        """Add independence between two input nodes"""
+        if edge1==edge2: return 
+        if not (edge2, edge1) in self.independence:
+            self.independence.add((edge1, edge2))
 
     def AreIndependent(self, edge1, edge2):
         """Return true if the transitions are independent"""
-        for i in self.indipendence:
+        if edge1==edge2: return False
+        for i in self.independence:
             if i == (edge1, edge2) or i == (edge2, edge1):
                 return True
         return False
 
     def InitEvents(self):
         """Initialize event classes"""
+        #we remove indipendence with non existing edges
         temp = []
-        for edge1, edge2 in self.indipendence: 
+        for edge1, edge2 in self.independence: 
             if not self.EdgeExists(edge1) or not self.EdgeExists(edge2) : temp.append((edge1, edge2))
-        for indipendence in temp: self.indipendence.remove(indipendence)
+        for independence in temp: self.independence.remove(independence)
 
         for start in self.nodes:
             edges = self.GetEdgesFrom(start)
@@ -142,8 +145,6 @@ class Graph:
             for edge1 in edges:
                 (start1, label1, end1, is_forward1) = edge1
                 for edge2 in edges:
-                    #if edge1 == edge2: continue
-
                     (start2, label2, end2, is_forward2) = edge2
                     
                     for end in self.nodes:
@@ -152,7 +153,7 @@ class Graph:
 
                         # searching for diamonds
                         if self.EdgeExists(first) and self.EdgeExists(second):
-                            # we check if there is indipendence at each angle 
+                            # we check if there is independence at each angle 
                             cond = {(edge1, edge2),
                                 (ReverseEdge(edge1), first),
                                 (ReverseEdge(edge2), second),
@@ -184,7 +185,7 @@ class Graph:
                 event2 = event
                 union = union.union(event)
 
-        # we remove the previous event stored, if any
+        # we remove the previous events stored, if any
         if (event1 != None): self.events.remove(event1) 
         else: union.add(edge1)
         if (event2 != None and event2 != event1): self.events.remove(event2)
@@ -222,6 +223,7 @@ class Graph:
                     #we don't want to use colors for backward events
                     backward_counter = 0
 
+                    #we get the index of the event, skipping the backwards events (true index - number of backward events encountered)
                     for i in range(n_events):
                         transition = list(list(self.events[i])[0])
                         if(not transition[3]): backward_counter = backward_counter + 1
@@ -230,18 +232,18 @@ class Graph:
         
         graph = graph + "} \n /* \n"
         
-        for (start1, label1, end1, is_forward1), (start2, label2, end2, is_forward2) in self.indipendence:
+        for (start1, label1, end1, is_forward1), (start2, label2, end2, is_forward2) in self.independence:
             graph = graph + '\t' + ('> ' if is_forward1 else '< ') + '"' + start1 + '" -"' + label1 + '"-> "'+ end1 +'" / '
             graph = graph + ('> ' if is_forward2 else '< ') + '"' + start2 + '" -"' + label2 + '"-> "'+ end2 +'"\n'
 
         graph = graph + '*/'
         return graph
        
-    def GetIndipendenceString(self):
+    def GetIndependenceString(self):
         """Return indipendece between transition in a printable string"""
         text = ""
-        for indipendence in self.indipendence:
-            edge1, edge2 = indipendence
+        for independence in self.independence:
+            edge1, edge2 = independence
             text = text+EdgeToString(edge1)+" ι "+EdgeToString(edge2)+"\n"
         return text
 

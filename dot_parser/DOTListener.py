@@ -26,12 +26,12 @@ class DOTListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by DOTParser#indipendence_list.
-    def enterIndipendence_list(self, ctx:DOTParser.Indipendence_listContext):
+    # Enter a parse tree produced by DOTParser#independence_list.
+    def enterIndependence_list(self, ctx:DOTParser.Independence_listContext):
         pass
 
-    # Exit a parse tree produced by DOTParser#indipendence_list.
-    def exitIndipendence_list(self, ctx:DOTParser.Indipendence_listContext):
+    # Exit a parse tree produced by DOTParser#independence_list.
+    def exitIndependence_list(self, ctx:DOTParser.Independence_listContext):
         pass
 
 
@@ -152,21 +152,21 @@ class DOTListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by DOTParser#indipendence.
-    def enterIndipendence(self, ctx:DOTParser.IndipendenceContext):
+    # Enter a parse tree produced by DOTParser#independence.
+    def enterIndependence(self, ctx:DOTParser.IndependenceContext):
         pass
 
-    # Exit a parse tree produced by DOTParser#indipendence.
-    def exitIndipendence(self, ctx:DOTParser.IndipendenceContext):
+    # Exit a parse tree produced by DOTParser#independence.
+    def exitIndependence(self, ctx:DOTParser.IndependenceContext):
         pass
 
 
-    # Enter a parse tree produced by DOTParser#indipendence_edge.
-    def enterIndipendence_edge(self, ctx:DOTParser.Indipendence_edgeContext):
+    # Enter a parse tree produced by DOTParser#independence_edge.
+    def enterIndependence_edge(self, ctx:DOTParser.Independence_edgeContext):
         pass
 
-    # Exit a parse tree produced by DOTParser#indipendence_edge.
-    def exitIndipendence_edge(self, ctx:DOTParser.Indipendence_edgeContext):
+    # Exit a parse tree produced by DOTParser#independence_edge.
+    def exitIndependence_edge(self, ctx:DOTParser.Independence_edgeContext):
         pass
 
 
