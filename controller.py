@@ -30,59 +30,43 @@ class Controller:
     def CheckProperties(self, properties):
         """Check graph properties and print error log"""
         errors = {}
-        if properties['SP'].get():
-            errors['SP']=SP.Check(self.graph)
 
-        if properties['BTI'].get():
-            errors['BTI']=BTI.Check(self.graph)
+        for property_id in properties:
+            if properties[property_id].get():
+                errors[property_id] = self.CheckProperty(property_id)
 
-        if properties['WF'].get():
-            errors['WF']=WF.Check(self.graph)
+        return errors
 
-        if properties['CPI'].get():
-            errors['CPI']=CPI.Check(self.graph)
-        
-        if properties['IRE'].get():
-            errors['IRE']=IRE.Check(self.graph)
-
-        return self.ErrorsToString(errors), errors
-                
-    def ErrorsToString(self, errors):
-        """Calls gets the messages of the errors"""
-        log = []
-        if 'SP' in errors:
-            log.extend(SP.ToString(errors['SP']))
-
-        if 'BTI' in errors:
-            log.extend(BTI.ToString(errors['BTI']))
-
-        if 'WF' in errors:
-            log.extend(WF.ToString(errors['WF']))
-
-        if 'CPI' in errors:
-            log.extend(CPI.ToString(errors['CPI']))
-
-        if 'IRE' in errors:
-            log.extend(IRE.ToString(errors['IRE']))
-        
-        return log
-
-    def ForceProperties(self, errors):
+    def ForceProperties(self, errors, check):
         """Check graph properties and return a new graph with the selected properties in DOT format"""
         new_graph = copy.deepcopy(self.graph)
-        if 'SP' in errors:
-            SP.Apply(new_graph, errors['SP'])
-                        
-        if 'BTI' in errors:
-            BTI.Apply(new_graph, errors['BTI'])
-                        
-        if 'WF' in errors:
-            WF.Apply(new_graph, errors['WF'])
-                        
-        if 'CPI' in errors:
-            CPI.Apply(new_graph, errors['CPI'])
-
-        if 'IRE' in errors:
-            IRE.Apply(new_graph, errors['CPI'])
+        
+        for property_id in errors:
+            for i in range(len(errors[property_id])): 
+                if(check[property_id][i].get()):
+                    self.ForceProperty(new_graph, property_id, errors[property_id][i])
 
         return new_graph
+
+    def GetPropertyName(self, property_id):
+        return self.GetPropertyByID(property_id).name
+
+    def CheckProperty(self, property_id):
+        return self.GetPropertyByID(property_id).Check(self.graph)
+
+    def GetLog(self, property_id, error):
+        return self.GetPropertyByID(property_id).GetLog(error)
+
+    def IsErrorApplyable(self, property_id, error):
+        return self.GetPropertyByID(property_id).IsApplyable(error)
+
+    def ForceProperty(self, graph, property_id, error):
+        if self.IsErrorApplyable(property_id, error):
+            self.GetPropertyByID(property_id).Apply(graph, error)
+
+    def GetPropertyByID(self, property_id):
+        if property_id=="SP": return SP
+        elif property_id=="WF": return WF
+        elif property_id=="BTI": return BTI
+        elif property_id=="CPI": return CPI
+        elif property_id=="IRE": return IRE

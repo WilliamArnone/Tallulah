@@ -2,22 +2,29 @@ from Graph import EdgeToString, Graph
 
 #t: P-α->Q and u: P-β->R and t ι u  =>  exist u': Q-β->S and t': R-α->S
 class SP:
+    
+    name = "SP - Square Property"
+    
     def Check(graph:Graph):
         """Check SP property and return true if holds"""
-        errors = set()
+        errors = []
+
+        #used to avoid duplicate new nodes
+        new_nodes = []
 
         #start is the P of our definition
         for start in graph.nodes:
             edges = graph.GetEdgesFrom(start)
 
             #edge1 is the t of our definition
-            for edge1 in edges:
+            while len(edges)>0:
+                edge1 = edges.pop()
                 (start1, label1, end1, is_forward1) = edge1
 
                 #edge2 is the u of our definition
                 for edge2 in edges:
                     (start2, label2, end2, is_forward2) = edge2
-                    if graph.AreIndipendent(edge1, edge2):
+                    if graph.AreIndependent(edge1, edge2):
                         #we need found to check if there is any node S that follows the axiom
                         found = False
                         #temp contains the possible edges to add if SP doesn't hold
@@ -33,10 +40,9 @@ class SP:
                             firstExist = graph.EdgeExists(first) 
                             secondExist = graph.EdgeExists(second)
 
-                            found = found or firstExist or secondExist
                             if firstExist and secondExist:
                                 #SP is valid, no need to search further
-                                temp = []
+                                found = True
                                 break
                             elif secondExist and not firstExist:
                                 #if SP doesn't hold, it's because u' is missing
@@ -46,39 +52,42 @@ class SP:
                                 temp.append(second)
 
                         if not found:
-                            #there is no possible candidate for S
-                            errors.add((edge1, edge2, (end1, label2, None, is_forward2)))
-                            #errors.add((edge1, edge2, (end2, label1, None, is_forward1)))
-                        else:
+                            counter = 0
+                            while str(counter) in graph.nodes or counter in new_nodes: counter+=1
+                            new_nodes.append(counter)
+
+                            errors.append((edge1, edge2, (end1, label2, str(counter), is_forward2), True))
+                            errors.append((edge1, edge2, (end2, label1, str(counter), is_forward1), True))
+
                             #store as error the previous found edges
                             for error in temp:
-                                errors.add((edge1, edge2, error))
-
-                            
+                                errors.append((edge1, edge2, error, False))
+            
         return errors
     
-    def Apply(graph: Graph, errors):
+    def Apply(graph: Graph, error):
         """Remove SP errors from the graph"""
-        for ind1, ind2, error in errors:
-            start, label, end, forward = error
-            if(end != None): graph.AddEdge(error)
+        ind1, ind2, edge, is_new_end = error
+        graph.AddEdge(edge)
 
-    def ToString(errors):
-        """Returns the SP errors in a string"""
-        log = [('SP - Square Property:'+'\n', "blue")]
-        if len(errors)==0:
-            log.append(('SP holds'+'\n', "green"))
+    def IsApplyable(error):
+        """Returns True if the error can be fixed"""
+        return True
+
+    def GetLog(error):
+        """Returns the BTI errors in a (text, color) list"""
+        ind1, ind2, edge, is_new_end = error
+        log = []
+        start, label, end, is_forward = edge
+        if is_new_end:
+            log.append((EdgeToString(ind1)+" ι "+EdgeToString(ind2), "red"))
+            log.append(("but they", "black"))
+            log.append(("don't have any valid t' or u'", "red"))
+            log.append(("could be created", "black"))
+            log.append((EdgeToString(edge), "blue"))
+            log.append(("with the new node \""+end+"\"", "black"))
         else:
-            for ind1, ind2, error in errors:
-                start, label, end, is_forward = error
-                if end == None:
-                    log.append(('- ', "black"))
-                    log.append((EdgeToString(ind1)+" ι "+EdgeToString(ind2), "red"))
-                    log.append((" but they don't have any valid t' or u'"+'\n', "black"))
-                else:
-                    log.append(('- ', "black"))
-                    log.append((EdgeToString(ind1)+" ι "+EdgeToString(ind2), "red"))
-                    log.append((' but they don\'t have a common end, could be added ', "black"))
-                    log.append((EdgeToString(error)+'\n', "green"))
-        log.append(('\n', "black"))
+            log.append((EdgeToString(ind1)+" ι "+EdgeToString(ind2), "red"))
+            log.append(('but they don\'t have a common end, could be added', "black"))
+            log.append((EdgeToString(edge), "blue"))
         return log

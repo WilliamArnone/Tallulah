@@ -122,8 +122,8 @@ class Graph:
         if not (edge2, edge1) in self.indipendence:
             if edge1!=edge2: self.indipendence.add((edge1, edge2))
 
-    def AreIndipendent(self, edge1, edge2):
-        """Return true if the transitions are indipendent"""
+    def AreIndependent(self, edge1, edge2):
+        """Return true if the transitions are independent"""
         for i in self.indipendence:
             if i == (edge1, edge2) or i == (edge2, edge1):
                 return True
@@ -159,13 +159,13 @@ class Graph:
                                 (ReverseEdge(first), ReverseEdge(second))
                             }
 
-                            indipendent = True
+                            independent = True
                             for condition in cond:
                                 ind1, ind2 = condition
-                                indipendent = indipendent and self.AreIndipendent(ind1, ind2)
+                                independent = independent and self.AreIndependent(ind1, ind2)
                             
                             # last condition of the event definition
-                            if indipendent and ((is_forward1 == is_forward2 and end1 != end2) or (is_forward1 == is_forward2 and start != end)):
+                            if independent and ((is_forward1 == is_forward2 and end1 != end2) or (is_forward1 == is_forward2 and start != end)):
                                     self.AddToEvent(edge1, second)
                                     self.AddToEvent(edge2, first)
 

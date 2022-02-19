@@ -8,10 +8,12 @@ from Graph import EdgeToString, Graph
 
 class WF:
 
-    def Check(graph:Graph, getMinEdges=True):
+    name = "WF - Well-Foundedness"
+
+    def Check(graph:Graph):#, getMinEdges=True):
         """Check WF property and return true if holds"""
         #a dot file is finite, the only way to make an infinite length paths is to make a cycle
-        
+    
         errors = set()
         not_visited = deepcopy(graph.nodes)
         path = []
@@ -29,7 +31,7 @@ class WF:
                 for error in graph.GetEdgesBetween(sub_errors[index], sub_errors[next], all=False): 
                     errors.add(error)
                     
-        return WF.__MinEdge(graph, errors) if getMinEdges and len(errors)>0 else errors
+        return list(errors)
 
     def __BFS(graph:Graph, node, path, not_visited):
         """BFS algorithm in order to find cycles"""
@@ -58,34 +60,17 @@ class WF:
 
         return errors
 
-    def __MinEdge(graph: Graph, edges):
-        """Checks WF with all the permutation of edges to find the minimum required"""
-        #we search the minimum number od edges needed to make the graph acyclic
-        for i in range(len(edges)-2):
-            permutations = itertools.combinations(edges, i+1)
-            for permutation in permutations:
-                test = deepcopy(graph)
-                #remove all the permutations from the graph
-                for edge in permutation:
-                    test.RemoveEdge(edge)
-                #if the graph is acyclic the permutation is the minimum required
-                if len(WF.Check(test, False))==0:
-                    return list(permutation)
-
-    def Apply(graph: Graph, errors):
+    def Apply(graph: Graph, error):
         """Remove WF errors from the graph"""
-        for error in errors:
-            graph.RemoveEdge(error)
+        graph.RemoveEdge(error)
+    
+    def IsApplyable(error):
+        """Returns True if the error can be fixed"""
+        return True
 
-    def ToString(errors):
-        """Returns the WF errors in a string"""
-        log = [('WF - Well-Foundedness:'+'\n', "blue")]
-        if len(errors)==0:
-            log.append(('WF holds'+'\n', "green"))
-        else:
-            for error in errors:
-                log.append(("- ", "black"))
-                log.append((EdgeToString(error), "red"))
-                log.append((' creates a cycle'+'\n', "black"))
-        log.append(('\n', "black"))
+    def GetLog(error):
+        """Returns the BTI errors in a (text, color) list"""
+        log = []
+        log.append((EdgeToString(error), "red"))
+        log.append(('creates a cycle', "black"))
         return log

@@ -47,7 +47,7 @@ digraph g {
 < F -b-> D / > F -a-> G
 
 
-//First a-transition indipendent with all b-transitions
+//First a-transition independent with all b-transitions
 > start -a-> A / > A -b-> C
 > start -a-> A / > A -b-> D
 > start -a-> A / > C -b-> F
