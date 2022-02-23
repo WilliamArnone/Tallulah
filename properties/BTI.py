@@ -24,7 +24,7 @@ class BTI:
         return list(errors)
 
     def Apply(graph: Graph, error):
-        """Remove BTI errors from the graph"""
+        """Remove BTI error from the graph"""
         edge1, edge2 = error
         graph.AddIndependence(edge1, edge2)
 
@@ -33,7 +33,7 @@ class BTI:
         return True
 
     def GetLog(error):
-        """Returns the BTI errors in a (text, color) list"""
+        """Returns the BTI error in a (text, color) list"""
         log = []
         edge1, edge2 = error
         log.append((EdgeToString(edge1), "red"))

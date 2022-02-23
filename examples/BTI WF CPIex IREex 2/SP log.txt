@@ -1,0 +1,8 @@
+SP - Square PropertyD~a~>B ι D-b->F but they don't have any valid t' or u' could be created B-b->0 with the new node "0" 
+D~a~>B ι D-b->F but they don't have any valid t' or u' could be created F~a~>0 with the new node "0" 
+D~b~>A ι D-a->E but they don't have any valid t' or u' could be created A-a->1 with the new node "1" 
+D~b~>A ι D-a->E but they don't have any valid t' or u' could be created E~b~>1 with the new node "1" 
+C~a~>B ι C-b->F but they don't have any valid t' or u' could be created B-b->2 with the new node "2" 
+C~a~>B ι C-b->F but they don't have any valid t' or u' could be created F~a~>2 with the new node "2" 
+C~b~>A ι C-a->E but they don't have any valid t' or u' could be created A-a->3 with the new node "3" 
+C~b~>A ι C-a->E but they don't have any valid t' or u' could be created E~b~>3 with the new node "3" 

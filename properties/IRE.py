@@ -46,7 +46,7 @@ class IRE:
         return edge1!=edge2
 
     def GetLog(error):
-        """Return the BTI errors in a (text, color) list"""
+        """Return the BTI error in a (text, color) list"""
         ind, edge1, edge2 = error
         log = []
         log.append((EdgeToString(edge1)+" ~ "+EdgeToString(ind)+" ι "+EdgeToString(edge2), "green"))

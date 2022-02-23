@@ -1,0 +1,25 @@
+digraph G {
+	"A" -> "Q" [label="c", color="#800000"]
+	"A" -> "C" [label="b", color="#bfef45"]
+	"B" -> "C" [label="a", color="#000075"]
+	"Q" -> "R" [label="b", color="#bfef45"]
+	"start" -> "A" [label="a", color="#000075"]
+	"start" -> "B" [label="b", color="#bfef45"]
+	"start" -> "P" [label="c", color="#800000"]
+	"P" -> "Q" [label="a", color="#000075"]
+	"C" -> "R" [label="c", color="#800000"]
+} 
+ /* 
+	< "A" -"a"-> "start" / > "A" -"b"-> "C"
+	< "C" -"b"-> "A" / < "C" -"a"-> "B"
+	< "Q" -"a"-> "P" / < "Q" -"c"-> "A"
+	> "A" -"c"-> "Q" / > "A" -"b"-> "C"
+	> "start" -"b"-> "B" / > "start" -"a"-> "A"
+	< "C" -"b"-> "A" / > "C" -"c"-> "R"
+	> "start" -"c"-> "P" / > "start" -"a"-> "A"
+	< "P" -"c"-> "start" / > "P" -"a"-> "Q"
+	< "B" -"b"-> "start" / > "B" -"a"-> "C"
+	< "R" -"b"-> "Q" / < "R" -"c"-> "C"
+	< "Q" -"c"-> "A" / > "Q" -"b"-> "R"
+	< "A" -"a"-> "start" / > "A" -"c"-> "Q"
+*/

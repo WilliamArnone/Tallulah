@@ -1,0 +1,47 @@
+digraph G {
+	"F" -> "G" [label="a", color="#800000"]
+	"E" -> "G" [label="b", color="#bfef45"]
+	"start" -> "A" [label="a", color="#800000"]
+	"start" -> "B" [label="b", color="#bfef45"]
+	"A" -> "D" [label="b", color="#bfef45"]
+	"A" -> "C" [label="b", color="#bfef45"]
+	"D" -> "F" [label="b", color="#bfef45"]
+	"D" -> "E" [label="a", color="#800000"]
+	"C" -> "F" [label="b", color="#bfef45"]
+	"C" -> "E" [label="a", color="#800000"]
+	"B" -> "D" [label="a", color="#800000"]
+	"B" -> "C" [label="a", color="#800000"]
+} 
+ /* 
+	> "start" -"a"-> "A" / > "start" -"b"-> "B"
+	> "D" -"a"-> "E" / > "D" -"b"-> "F"
+	< "G" -"b"-> "E" / < "G" -"a"-> "F"
+	< "D" -"a"-> "B" / > "D" -"a"-> "E"
+	> "A" -"b"-> "C" / > "A" -"b"-> "D"
+	> "start" -"a"-> "A" / > "E" -"b"-> "G"
+	< "C" -"b"-> "A" / > "C" -"a"-> "E"
+	< "C" -"a"-> "B" / > "C" -"a"-> "E"
+	< "D" -"b"-> "A" / > "D" -"a"-> "E"
+	< "F" -"b"-> "C" / < "F" -"b"-> "D"
+	< "B" -"b"-> "start" / > "B" -"a"-> "D"
+	< "A" -"a"-> "start" / > "A" -"b"-> "D"
+	> "start" -"a"-> "A" / > "A" -"b"-> "D"
+	> "start" -"a"-> "A" / > "D" -"b"-> "F"
+	> "start" -"a"-> "A" / > "C" -"b"-> "F"
+	< "D" -"a"-> "B" / > "D" -"b"-> "F"
+	< "E" -"a"-> "C" / < "E" -"a"-> "D"
+	< "C" -"a"-> "B" / > "C" -"b"-> "F"
+	< "C" -"b"-> "A" / > "C" -"b"-> "F"
+	< "D" -"b"-> "A" / > "D" -"b"-> "F"
+	< "E" -"a"-> "C" / > "E" -"b"-> "G"
+	> "B" -"a"-> "C" / > "B" -"a"-> "D"
+	> "start" -"a"-> "A" / > "A" -"b"-> "C"
+	< "A" -"a"-> "start" / > "A" -"b"-> "C"
+	> "C" -"a"-> "E" / > "C" -"b"-> "F"
+	< "F" -"b"-> "C" / > "F" -"a"-> "G"
+	< "C" -"b"-> "A" / < "C" -"a"-> "B"
+	< "B" -"b"-> "start" / > "B" -"a"-> "C"
+	< "E" -"a"-> "D" / > "E" -"b"-> "G"
+	< "F" -"b"-> "D" / > "F" -"a"-> "G"
+	< "D" -"b"-> "A" / < "D" -"a"-> "B"
+*/

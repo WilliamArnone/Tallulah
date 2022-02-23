@@ -65,7 +65,7 @@ class CPI:
         return not_fixable
     
     def Apply(graph: Graph, error):
-        """Remove CPI errors from the graph"""
+        """Remove CPI error from the graph"""
         edge1, edge2, rev, edge = error
         if rev != edge: graph.AddIndependence(rev, edge)
 
@@ -75,7 +75,7 @@ class CPI:
         return rev != edge
 
     def GetLog(error):
-        """Return the BTI errors in a (text, color) list"""
+        """Return the BTI error in a (text, color) list"""
         log = []
         edge1, edge2, rev, edge = error
         if rev == edge:

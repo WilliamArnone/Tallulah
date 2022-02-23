@@ -62,7 +62,7 @@ class WF:
         return errors
 
     def Apply(graph: Graph, error):
-        """Remove WF errors from the graph"""
+        """Remove WF error from the graph"""
         graph.RemoveEdge(error)
     
     def IsApplyable(error):
@@ -70,7 +70,7 @@ class WF:
         return True
 
     def GetLog(error):
-        """Returns the BTI errors in a (text, color) list"""
+        """Returns the BTI error in a (text, color) list"""
         log = []
         log.append((EdgeToString(error), "red"))
         log.append(('creates a cycle', "black"))

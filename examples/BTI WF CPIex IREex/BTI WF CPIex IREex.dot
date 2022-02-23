@@ -1,0 +1,56 @@
+digraph g {
+    start -> A [label="a"]
+    start -> B [label="b"]
+    A -> {C D} [label="b"]
+    B -> {C D} [label="a"]
+    {C D} -> E [label="a"]
+    {C D} -> F [label="b"]
+    E -> G [label="b"]
+    F -> G [label="a"]
+}
+/*
+//BTI
+< G-b->E / < G-a->F
+< E-a->C / < E-a->D
+< F-b->C / < F-b->D
+< C-b->A / < C-a->B
+< D-b->A / < D-a->B
+
+//CPI
+> start -a-> A / > start -b-> B
+
+< A -a-> start / > A -b-> C
+< B -b-> start / > B -a-> C
+
+< A -a-> start / > A -b-> D
+< B -b-> start / > B -a-> D
+
+> A -b-> C / > A -b-> D
+> B -a-> C / > B -a-> D
+
+< C -b-> A / > C -a-> E
+< C -b-> A / > C -b-> F
+< C -a-> B / > C -a-> E
+< C -a-> B / > C -b-> F
+
+< D -b-> A / > D -a-> E
+< D -b-> A / > D -b-> F
+< D -a-> B / > D -a-> E
+< D -a-> B / > D -b-> F
+
+> C -a-> E / > C -b-> F
+< E -a-> C / > E -b-> G
+< F -b-> C / > F -a-> G
+
+> D -a-> E / > D -b-> F
+< E -a-> D / > E -b-> G
+< F -b-> D / > F -a-> G
+
+
+//First a-transition independent with all b-transitions
+> start -a-> A / > A -b-> C
+> start -a-> A / > A -b-> D
+> start -a-> A / > C -b-> F
+> start -a-> A / > D -b-> F
+> start -a-> A / > E -b-> G
+*/

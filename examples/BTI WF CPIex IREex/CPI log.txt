@@ -1,0 +1,8 @@
+CPI - Coinitial Propagation of IndependenceD~a~>B ι D-a->E would imply B-a->D ι B-a->D but this is not possible since independence is irreflexive 
+C~b~>A ι C-b->F would imply F~b~>C ι F~b~>C but this is not possible since independence is irreflexive 
+D~b~>A ι D-b->F would imply A-b->D ι A-b->D but this is not possible since independence is irreflexive 
+C~a~>B ι C-a->E would imply B-a->C ι B-a->C but this is not possible since independence is irreflexive 
+C~a~>B ι C-a->E would imply E~a~>C ι E~a~>C but this is not possible since independence is irreflexive 
+C~b~>A ι C-b->F would imply A-b->C ι A-b->C but this is not possible since independence is irreflexive 
+D~a~>B ι D-a->E would imply E~a~>D ι E~a~>D but this is not possible since independence is irreflexive 
+D~b~>A ι D-b->F would imply F~b~>D ι F~b~>D but this is not possible since independence is irreflexive 

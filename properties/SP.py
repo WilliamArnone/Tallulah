@@ -66,7 +66,7 @@ class SP:
         return errors
     
     def Apply(graph: Graph, error):
-        """Remove SP errors from the graph"""
+        """Remove SP error from the graph"""
         ind1, ind2, edge, is_new_end = error
         graph.AddEdge(edge)
 
@@ -75,7 +75,7 @@ class SP:
         return True
 
     def GetLog(error):
-        """Return the BTI errors in a (text, color) list"""
+        """Return the BTI error in a (text, color) list"""
         ind1, ind2, edge, is_new_end = error
         log = []
         start, label, end, is_forward = edge
