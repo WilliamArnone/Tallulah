@@ -38,13 +38,13 @@ class Controller:
 
         return self.graph, errors
 
-    def ForceProperties(self, graph, errors, check):
+    def ForceProperties(self, graph, errors, check_values):
         """Check graph properties and return a new graph with the selected properties in DOT format"""
         new_graph = copy.deepcopy(graph)
         
         for property_id in errors:
             for i in range(len(errors[property_id])): 
-                if(check[property_id][i].get()):
+                if(check_values[property_id][i].get()):
                     self.ForceProperty(new_graph, property_id, errors[property_id][i])
 
         return new_graph

@@ -218,7 +218,7 @@ class View:
         btn = Button(popUp, text="Save", command=lambda: self.SaveLog(errors))
         btn.pack(side=LEFT, fill="x", expand=True)
 
-        btn = Button(popUp, text="Apply Selected", command=lambda: self.ForceProperties(graph, errors, check_values))
+        btn = Button(popUp, text="Force Selected", command=lambda: self.ForceProperties(graph, errors, check_values))
         btn.pack(side=RIGHT, fill="x", expand=True)
         
     def SaveLog(self, errors):
