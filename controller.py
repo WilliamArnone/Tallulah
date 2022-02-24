@@ -4,8 +4,12 @@ import copy
 from Graph import EdgeToString
 from dot_parser.main import main as parse
 from properties.BTI import BTI
+from properties.CIRE import CIRE
 from properties.CPI import CPI
+from properties.ID import ID
+from properties.IEC import IEC
 from properties.IRE import IRE
+from properties.RPI import RPI
 from properties.SP import SP
 from properties.WF import WF
 
@@ -77,3 +81,7 @@ class Controller:
         elif property_id=="BTI": return BTI
         elif property_id=="CPI": return CPI
         elif property_id=="IRE": return IRE
+        elif property_id=="CIRE": return CIRE
+        elif property_id=="IEC": return IEC
+        elif property_id=="ID": return ID
+        elif property_id=="RPI": return RPI

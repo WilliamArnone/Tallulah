@@ -80,14 +80,14 @@ class SP:
         log = []
         start, label, end, is_forward = edge
         if is_new_end:
-            log.append((EdgeToString(ind1)+" ι "+EdgeToString(ind2), "red"))
+            log.append((EdgeToString(ind1)+" ι "+EdgeToString(ind2), "green"))
             log.append(("but they", "black"))
             log.append(("don't have any valid t' or u'", "red"))
             log.append(("could be created", "black"))
             log.append((EdgeToString(edge), "blue"))
             log.append(("with the new node \""+end+"\"", "black"))
         else:
-            log.append((EdgeToString(ind1)+" ι "+EdgeToString(ind2), "red"))
+            log.append((EdgeToString(ind1)+" ι "+EdgeToString(ind2), "green"))
             log.append(('but they don\'t have a common end, could be added', "black"))
             log.append((EdgeToString(edge), "blue"))
         return log

@@ -1,0 +1,21 @@
+digraph G {
+	"B" -> "D" [label="b", color="#bfef45"]
+	"A" -> "B" [label="a", color="#800000"]
+	"A" -> "C" [label="b", color="#bfef45"]
+	"C" -> "F" [label="d", color="#42d4f4"]
+	"C" -> "D" [label="a", color="#800000"]
+	"C" -> "E" [label="c", color="#000075"]
+	"F" -> "G" [label="c", color="#000075"]
+	"E" -> "G" [label="d", color="#42d4f4"]
+} 
+ /* 
+	> "B" -"b"-> "D" / < "B" -"a"-> "A"
+	> "C" -"d"-> "F" / > "C" -"c"-> "E"
+	> "A" -"a"-> "B" / > "E" -"d"-> "G"
+	> "C" -"a"-> "D" / < "C" -"b"-> "A"
+	< "D" -"a"-> "C" / < "D" -"b"-> "B"
+	> "F" -"c"-> "G" / < "F" -"d"-> "C"
+	> "E" -"d"-> "G" / < "E" -"c"-> "C"
+	> "A" -"a"-> "B" / > "A" -"b"-> "C"
+	< "G" -"d"-> "E" / < "G" -"c"-> "F"
+*/

@@ -6,8 +6,12 @@ from PIL import ImageTk, Image
 
 from controller import Controller
 from properties.BTI import BTI
+from properties.CIRE import CIRE
 from properties.CPI import CPI
+from properties.ID import ID
+from properties.IEC import IEC
 from properties.IRE import IRE
+from properties.RPI import RPI
 from properties.SP import SP
 from properties.WF import WF
 
@@ -100,6 +104,22 @@ class View:
             properties['IRE']=BooleanVar()
             ire = Checkbutton(properties_frame, text=IRE.name, variable=properties['IRE'])
             ire.pack(anchor=W)
+
+            properties['CIRE']=BooleanVar()
+            cire = Checkbutton(properties_frame, text=CIRE.name, variable=properties['CIRE'])
+            cire.pack(anchor=W)
+
+            properties['IEC']=BooleanVar()
+            iec = Checkbutton(properties_frame, text=IEC.name, variable=properties['IEC'])
+            iec.pack(anchor=W)
+            
+            properties['ID']=BooleanVar()
+            id = Checkbutton(properties_frame, text=ID.name, variable=properties['ID'])
+            id.pack(anchor=W)
+            
+            properties['RPI']=BooleanVar()
+            rpi = Checkbutton(properties_frame, text=RPI.name, variable=properties['RPI'])
+            rpi.pack(anchor=W)
 
             check_button = Button(properties_frame, text="Check", command=lambda:self.CheckProperties(properties))
             check_button.pack()

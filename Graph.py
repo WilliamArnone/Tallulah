@@ -142,7 +142,9 @@ class Graph:
         for start in self.nodes:
             edges = self.GetEdgesFrom(start)
 
-            for edge1 in edges:
+            while len(edges)>1:
+                edge1 = edges.pop()
+                
                 (start1, label1, end1, is_forward1) = edge1
                 for edge2 in edges:
                     (start2, label2, end2, is_forward2) = edge2
@@ -166,7 +168,7 @@ class Graph:
                                 independent = independent and self.AreIndependent(ind1, ind2)
                             
                             # last condition of the event definition
-                            if independent and ((is_forward1 == is_forward2 and end1 != end2) or (is_forward1 == is_forward2 and start != end)):
+                            if independent and ((is_forward1 == is_forward2 and end1 != end2) or (is_forward1 != is_forward2 and start != end)):
                                     self.AddToEvent(edge1, second)
                                     self.AddToEvent(edge2, first)
 

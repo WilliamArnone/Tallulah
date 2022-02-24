@@ -1,0 +1,13 @@
+digraph h {
+    A -> B [label=a]
+    A -> C [label=b]
+    B -> D [label=b]
+    C -> D [label=a]
+    C -> E [label=c]
+    C -> F [label=d]
+    E -> G [label=d]
+    F -> G [label=c]
+}
+/*
+> A-a->B / > E-d->G
+*/
