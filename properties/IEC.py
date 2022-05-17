@@ -57,7 +57,7 @@ class IEC:
     def IsApplyable(error):
         """Return True if the error can be fixed"""
         edge1, edge2, event1edge, event2edge = error
-        are_coinitial = list(event1edge)[0]==list(event2edge)[0] if event1edge != None and event2edge != None else False
+        are_coinitial = event1edge != None and event2edge != None and list(event1edge)[0]==list(event2edge)[0]
         return event1edge!=event2edge and are_coinitial
 
     def GetLog(error):
