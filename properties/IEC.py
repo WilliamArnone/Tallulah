@@ -42,7 +42,7 @@ class IEC:
             already_controlled.append((event1, event2))
 
             if not coinitial_exists and len(temp)==0:
-                non_applyable_errors.append(edge1, edge2, None, None)
+                non_applyable_errors.append((edge1, edge2, None, None))
 
             for error in temp: errors.append(error)
         
@@ -57,7 +57,7 @@ class IEC:
     def IsApplyable(error):
         """Return True if the error can be fixed"""
         edge1, edge2, event1edge, event2edge = error
-        are_coinitial = list(event1edge)[0]==list(event2edge)[0]
+        are_coinitial = list(event1edge)[0]==list(event2edge)[0] if event1edge != None and event2edge != None else False
         return event1edge!=event2edge and are_coinitial
 
     def GetLog(error):
