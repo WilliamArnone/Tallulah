@@ -212,7 +212,7 @@ class View:
             if not all(self.controller.IsErrorApplyable(property_id, error) for error in errors[property_id]):
                 error_frame = Frame(errors_frame)
                 error_frame.pack(fill='x', expand=True)
-                Label(error_frame, text=property_id+" CANNOT BE PERFORMED!", foreground=color["red"]).grid(row=0, column=0)
+                Label(error_frame, text=property_id+" CANNOT BE FORCED!", foreground=color["red"]).grid(row=0, column=0)
 
             #label for each error
             for error in errors[property_id]:

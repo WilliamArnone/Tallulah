@@ -69,7 +69,7 @@ class IEC:
             log.append((EdgeToString(edge1)+" ~ "+EdgeToString(edge2)+" ι "+EdgeToString(edge2), "green"))
             log.append(("there are", "black"))
             log.append(("no coinitial independent edges", "red"))
-            log.append(("and there are not coinitial edges neither", "black"))
+            log.append(("and there are no coinitial edges at all", "black"))
         else:
             log.append((EdgeToString(edge1)+" ~ "+EdgeToString(edge2)+" ι "+EdgeToString(edge2), "green"))
             log.append(("there are", "black"))
