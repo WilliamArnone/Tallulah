@@ -2,7 +2,7 @@ from Graph import EdgeToString, Graph, ReverseEdge
 
 class RPI:
 
-    name = "RPI - Reversing Preserves independence"
+    name = "RPI - Reversing Preserves Independence"
 
     def Check(graph:Graph):
         """Check property and return true if holds"""

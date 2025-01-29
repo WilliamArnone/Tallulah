@@ -2,7 +2,7 @@ from Graph import EdgeToString, Graph, ReverseEdge
 
 class IEC:
 
-    name = "IEC - Independence of Event is Coinitial"
+    name = "IEC - Independence of Events is Coinitial"
 
     def Check(graph:Graph):
         """Check property and return true if holds"""
